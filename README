@@ -1,1 +1,21 @@
-Starting Readme
+# Superschedules Collector
+
+Django-based service for collecting event information from multiple sources
+and posting it to the Superschedules API.
+
+## Setup
+
+```bash
+pip install -r requirements.txt
+python manage.py check  # verify Django project is configured
+```
+
+## Running the Collector
+
+Run all scrapers and the LLM agent and post results:
+
+```bash
+python -m jobs.run_everything
+```
+
+Environment variables are loaded from `.env` (see `.env.example`).
