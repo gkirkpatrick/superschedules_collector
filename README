@@ -1,13 +1,12 @@
 # Superschedules Collector
 
-Django-based service for collecting event information from multiple sources
+Standalone Python tool for collecting event information from multiple sources
 and posting it to the Superschedules API.
 
 ## Setup
 
 ```bash
 pip install -r requirements.txt
-python manage.py check  # verify Django project is configured
 ```
 
 ## Running the Collector
