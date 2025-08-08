@@ -1,3 +1,7 @@
 requests
 python-dotenv
 beautifulsoup4
+openai
+trafilatura
+readability-lxml
+lxml

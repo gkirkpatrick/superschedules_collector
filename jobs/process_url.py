@@ -4,18 +4,19 @@ from __future__ import annotations
 import sys
 from typing import List
 
-import requests
-
 from ingest.api_client import post_event
 from scrapers.jsonld_scraper import scrape_events_from_jsonld
-
+from scrapers.llm_scraper import scrape_events_from_llm
+import requests
 
 def run(url: str) -> None:
     """Scrape events from ``url`` and post them to the backend."""
     try:
         events: List[dict] = scrape_events_from_jsonld(url)
-    except requests.RequestException as exc:
-        print("❌ Failed to fetch page:", exc)
+        if not events:
+            events = scrape_events_from_llm(url)
+    except Exception as exc:
+        print("❌ Failed to fetch or parse page:", exc)
         return
 
     if not events:

@@ -18,11 +18,15 @@ python -m jobs.run_everything
 ```
 
 Environment variables are loaded from `.env` (see `.env.example`).
+Supply your OpenAI key via `OPENAI_API_KEY`.
 
 ## Processing a Single URL
 
-The collector can scrape event data from pages that expose JSON-LD metadata.
-For example, to ingest events from the Needham Library events page:
+The collector first looks for JSON-LD metadata. If none is found, it
+falls back to sending the page text to OpenAI's structured-output API to
+extract events. For example, to ingest events from the Needham Library
+events page:
+
 
 ```bash
 python -m jobs.process_url https://needhamlibrary.org/events/
