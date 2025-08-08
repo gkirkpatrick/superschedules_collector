@@ -3,10 +3,9 @@ from __future__ import annotations
 
 from typing import Any, List
 
-import requests
-from bs4 import BeautifulSoup
 from openai import APIStatusError, OpenAI
 from pydantic import BaseModel, Field
+from playwright.sync_api import sync_playwright
 
 client = OpenAI()
 
@@ -37,11 +36,21 @@ SYSTEM_PROMPT = (
 
 
 def fetch_rendered_text(url: str) -> str:
-    """Return rendered text content for ``url``."""
-    response = requests.get(url, timeout=30)
-    response.raise_for_status()
-    soup = BeautifulSoup(response.text, "html.parser")
-    return soup.get_text("\n", strip=True)
+    """Return rendered text content for ``url``.
+
+    The page is rendered in a headless Chromium browser, ``header`` and
+    ``footer`` elements are removed, and the remaining visible text is
+    returned—similar to selecting all text and copying it.
+    """
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch()
+        page = browser.new_page()
+        page.goto(url, wait_until="networkidle")
+        page.evaluate("const h=document.querySelector('header'); if(h) h.remove();")
+        page.evaluate("const f=document.querySelector('footer'); if(f) f.remove();")
+        text = page.evaluate("document.body.innerText")
+        browser.close()
+    return text.strip()
 
 
 def parse_events(url: str) -> dict[str, Any]:
