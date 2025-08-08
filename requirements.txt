@@ -1,5 +1,6 @@
 requests
 python-dotenv
 beautifulsoup4
+requests-html
 openai
 pydantic
