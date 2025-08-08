@@ -7,7 +7,7 @@ from typing import List
 from ingest.api_client import post_event
 from scrapers.jsonld_scraper import scrape_events_from_jsonld
 from scrapers.llm_scraper import scrape_events_from_llm
-
+import requests
 
 def run(url: str) -> None:
     """Scrape events from ``url`` and post them to the backend."""
