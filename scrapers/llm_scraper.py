@@ -4,7 +4,7 @@ from __future__ import annotations
 from typing import Any, List
 
 import trafilatura
-from openai import OpenAI
+from openai import APIStatusError, OpenAI
 from pydantic import BaseModel, Field
 
 client = OpenAI()
@@ -49,15 +49,22 @@ def parse_events(url: str) -> dict[str, Any]:
     if not text or len(text) < 200:
         return {"source": url, "events": []}
 
-    resp = client.responses.parse(
-        model="o4-mini",
-        reasoning={"effort": "low"},
-        input=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": f"URL: {url}\n\nPAGE_TEXT:\n{text[:120000]}"},
-        ],
-        text_format=Events,
-    )
+    try:
+        resp = client.responses.parse(
+            model="o4-nano",
+            reasoning={"effort": "low"},
+            input=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": f"URL: {url}\n\nPAGE_TEXT:\n{text[:120000]}"},
+            ],
+            text_format=Events,
+        )
+    except APIStatusError as exc:  # pragma: no cover - network errors
+        if exc.response.status_code == 429:
+            raise RuntimeError(
+                "OpenAI API returned status 429: there's a good chance the account is out of money."
+            ) from exc
+        raise
     data = resp.output_parsed.model_dump()
     data["source"] = data.get("source") or url
     return data
