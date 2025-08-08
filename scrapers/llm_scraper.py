@@ -1,9 +1,9 @@
-"""Extract events from page text via OpenAI's structured output API."""
+"""Extract events from raw HTML via OpenAI's structured output API."""
 from __future__ import annotations
 
 from typing import Any, List
 
-import trafilatura
+import requests
 from openai import APIStatusError, OpenAI
 from pydantic import BaseModel, Field
 
@@ -27,7 +27,7 @@ class Events(BaseModel):
     events: List[Event] = Field(default_factory=list)
 
 SYSTEM_PROMPT = (
-    "You extract events from arbitrary webpage text.\n"
+    "You extract events from arbitrary webpage HTML.\n"
     "- Output *only* fields defined by the schema.\n"
     "- Normalize dates to ISO 8601; if only a day is given, use YYYY-MM-DD.\n"
     "- If timezone is implied by the venue or page, include it (IANA tz).\n"
@@ -35,18 +35,17 @@ SYSTEM_PROMPT = (
 )
 
 
-def fetch_text(url: str) -> str:
-    """Return clean text content for ``url`` using Trafilatura."""
-    downloaded = trafilatura.fetch_url(url, no_ssl=False)
-    if not downloaded:
-        raise RuntimeError("Failed to fetch")
-    return trafilatura.extract(downloaded, include_comments=False, include_tables=True) or ""
+def fetch_html(url: str) -> str:
+    """Return raw HTML content for ``url``."""
+    response = requests.get(url, timeout=30)
+    response.raise_for_status()
+    return response.text
 
 
 def parse_events(url: str) -> dict[str, Any]:
     """Use OpenAI to parse events from ``url`` into the structured schema."""
-    text = fetch_text(url)
-    if not text or len(text) < 200:
+    html = fetch_html(url)
+    if not html or len(html) < 200:
         return {"source": url, "events": []}
 
     try:
@@ -55,7 +54,7 @@ def parse_events(url: str) -> dict[str, Any]:
             reasoning={"effort": "low"},
             input=[
                 {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": f"URL: {url}\n\nPAGE_TEXT:\n{text[:120000]}"},
+                {"role": "user", "content": f"URL: {url}\n\nPAGE_HTML:\n{html[:120000]}"},
             ],
             text_format=Events,
         )
