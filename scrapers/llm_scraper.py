@@ -3,8 +3,6 @@ from __future__ import annotations
 
 from typing import Any, List
 
-import requests
-from bs4 import BeautifulSoup
 from openai import APIStatusError, OpenAI
 from pydantic import BaseModel, Field
 from playwright.sync_api import sync_playwright
@@ -68,6 +66,7 @@ def fetch_rendered_text(url: str) -> str:
                     page.goto(target, wait_until="networkidle")
         else:
             page.wait_for_load_state("networkidle")
+
         page.evaluate("const h=document.querySelector('header'); if(h) h.remove();")
         page.evaluate("const f=document.querySelector('footer'); if(f) f.remove();")
         text = page.evaluate("document.body.innerText")
