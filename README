@@ -33,4 +33,5 @@ python -m jobs.process_url https://needhamlibrary.org/events/
 ```
 
 The script fetches the page, extracts any events, and submits them to the
-Superschedules API.
+Superschedules API. Set ``SCRAPER_DEBUG=1`` to log which scraper was used
+and the events returned.
