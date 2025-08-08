@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 OPENAI_API_URL = os.getenv("OPENAI_API_URL", "https://api.openai.com/v1/chat/completions")
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "o4-nano")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 PROMPT_TEMPLATE = (
@@ -95,7 +95,14 @@ def _extract_event_via_llm(html: str, source_url: str) -> dict[str, Any]:
     }
 
     response = requests.post(OPENAI_API_URL, headers=headers, json=payload, timeout=60)
-    response.raise_for_status()
+    try:
+        response.raise_for_status()
+    except requests.HTTPError as exc:  # pragma: no cover - network errors
+        if response.status_code == 429:
+            raise RuntimeError(
+                "OpenAI API returned status 429: there's a good chance the account is out of money."
+            ) from exc
+        raise
 
     data = response.json()
     try:
