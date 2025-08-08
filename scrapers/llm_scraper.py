@@ -5,38 +5,26 @@ from typing import Any, List
 
 import trafilatura
 from openai import OpenAI
+from pydantic import BaseModel, Field
 
 client = OpenAI()
 
-EVENT_SCHEMA = {
-    "name": "Events",
-    "schema": {
-        "type": "object",
-        "properties": {
-            "source": {"type": "string"},
-            "events": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "required": ["title", "start"],
-                    "properties": {
-                        "title": {"type": "string"},
-                        "description": {"type": "string"},
-                        "start": {"type": "string", "description": "ISO 8601 datetime or date"},
-                        "end": {"type": "string"},
-                        "timezone": {"type": "string"},
-                        "location": {"type": "string"},
-                        "organizer": {"type": "string"},
-                        "price": {"type": "string"},
-                        "url": {"type": "string", "format": "uri"},
-                    },
-                },
-            },
-        },
-        "required": ["source", "events"],
-        "additionalProperties": False,
-    },
-}
+
+class Event(BaseModel):
+    title: str
+    description: str | None = None
+    start: str
+    end: str | None = None
+    timezone: str | None = None
+    location: str | None = None
+    organizer: str | None = None
+    price: str | None = None
+    url: str | None = None
+
+
+class Events(BaseModel):
+    source: str | None = None
+    events: List[Event] = Field(default_factory=list)
 
 SYSTEM_PROMPT = (
     "You extract events from arbitrary webpage text.\n"
@@ -61,16 +49,16 @@ def parse_events(url: str) -> dict[str, Any]:
     if not text or len(text) < 200:
         return {"source": url, "events": []}
 
-    resp = client.responses.create(
+    resp = client.responses.parse(
         model="o4-mini",
         reasoning={"effort": "low"},
         input=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": f"URL: {url}\n\nPAGE_TEXT:\n{text[:120000]}"},
         ],
-        response_format={"type": "json_schema", "json_schema": EVENT_SCHEMA},
+        text_format=Events,
     )
-    data = resp.output_parsed  # already a dict matching EVENT_SCHEMA
+    data = resp.output_parsed.model_dump()
     data["source"] = data.get("source") or url
     return data
 
