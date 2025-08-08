@@ -1,4 +1,4 @@
-"""Scrape HTML event blocks and extract structured data via an LLM."""
+"""Scrape event blocks and extract structured data via an LLM."""
 from __future__ import annotations
 
 import json
@@ -16,9 +16,9 @@ OPENAI_MODEL = os.getenv("OPENAI_MODEL", "o4-nano")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 PROMPT_TEMPLATE = (
-    "Extract structured event data from this HTML. Return valid JSON with:\n"
+    "Extract structured event data from this text. Return valid JSON with:\n"
     "title, start_time, end_time, location, description, image_url, tags (list), source_url\n\n"
-    "HTML:\n{html}"
+    "TEXT:\n{text}"
 )
 
 
@@ -38,7 +38,7 @@ def scrape_and_extract_events(
     Args:
         url: URL of the page containing event blocks.
         selector: CSS selector to identify event blocks.
-        debug_dir: If provided, save raw HTML and parsed JSON for debugging.
+        debug_dir: If provided, save block text and parsed JSON for debugging.
 
     Returns:
         A list of event dictionaries.
@@ -56,9 +56,9 @@ def scrape_and_extract_events(
         os.makedirs(debug_dir, exist_ok=True)
 
     for idx, block in enumerate(blocks, start=1):
-        outer_html = str(block)
+        block_text = block.get_text("\n", strip=True)
         try:
-            event = _extract_event_via_llm(outer_html, url)
+            event = _extract_event_via_llm(block_text, url)
         except Exception:  # broad catch to skip bad blocks
             continue
 
@@ -68,20 +68,20 @@ def scrape_and_extract_events(
         events.append(event)
 
         if debug_dir:
-            with open(os.path.join(debug_dir, f"block_{idx}.html"), "w", encoding="utf-8") as f_html:
-                f_html.write(outer_html)
+            with open(os.path.join(debug_dir, f"block_{idx}.txt"), "w", encoding="utf-8") as f_text:
+                f_text.write(block_text)
             with open(os.path.join(debug_dir, f"block_{idx}.json"), "w", encoding="utf-8") as f_json:
                 json.dump(event, f_json, indent=2)
 
     return events
 
 
-def _extract_event_via_llm(html: str, source_url: str) -> dict[str, Any]:
-    """Send HTML to an LLM and parse the resulting JSON."""
+def _extract_event_via_llm(text: str, source_url: str) -> dict[str, Any]:
+    """Send rendered text to an LLM and parse the resulting JSON."""
     if not OPENAI_API_KEY:
         raise LLMExtractionError("OPENAI_API_KEY environment variable not set")
 
-    prompt = PROMPT_TEMPLATE.format(html=html)
+    prompt = PROMPT_TEMPLATE.format(text=text)
 
     payload = {
         "model": OPENAI_MODEL,

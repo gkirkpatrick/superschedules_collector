@@ -1,9 +1,10 @@
-"""Extract events from raw HTML via OpenAI's structured output API."""
+"""Extract events from rendered webpage text via OpenAI's structured output API."""
 from __future__ import annotations
 
 from typing import Any, List
 
 import requests
+from bs4 import BeautifulSoup
 from openai import APIStatusError, OpenAI
 from pydantic import BaseModel, Field
 
@@ -27,7 +28,7 @@ class Events(BaseModel):
     events: List[Event] = Field(default_factory=list)
 
 SYSTEM_PROMPT = (
-    "You extract events from arbitrary webpage HTML.\n"
+    "You extract events from the text content of arbitrary webpages.\n"
     "- Output *only* fields defined by the schema.\n"
     "- Normalize dates to ISO 8601; if only a day is given, use YYYY-MM-DD.\n"
     "- If timezone is implied by the venue or page, include it (IANA tz).\n"
@@ -35,17 +36,18 @@ SYSTEM_PROMPT = (
 )
 
 
-def fetch_html(url: str) -> str:
-    """Return raw HTML content for ``url``."""
+def fetch_rendered_text(url: str) -> str:
+    """Return rendered text content for ``url``."""
     response = requests.get(url, timeout=30)
     response.raise_for_status()
-    return response.text
+    soup = BeautifulSoup(response.text, "html.parser")
+    return soup.get_text("\n", strip=True)
 
 
 def parse_events(url: str) -> dict[str, Any]:
     """Use OpenAI to parse events from ``url`` into the structured schema."""
-    html = fetch_html(url)
-    if not html or len(html) < 200:
+    page_text = fetch_rendered_text(url)
+    if not page_text or len(page_text) < 200:
         return {"source": url, "events": []}
 
     try:
@@ -54,7 +56,7 @@ def parse_events(url: str) -> dict[str, Any]:
             reasoning={"effort": "low"},
             input=[
                 {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": f"URL: {url}\n\nPAGE_HTML:\n{html[:120000]}"},
+                {"role": "user", "content": f"URL: {url}\n\nPAGE_TEXT:\n{page_text[:120000]}"},
             ],
             text_format=Events,
         )
