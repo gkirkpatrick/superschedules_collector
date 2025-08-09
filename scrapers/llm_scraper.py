@@ -61,7 +61,7 @@ def parse_events(url: str) -> dict[str, Any]:
 
     try:
         resp = client.responses.parse(
-            model="o4-nano",
+            model="o4-mini",
             reasoning={"effort": "low"},
             input=[
                 {"role": "system", "content": SYSTEM_PROMPT},
