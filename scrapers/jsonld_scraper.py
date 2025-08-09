@@ -7,6 +7,8 @@ from typing import Any, List
 import requests
 from bs4 import BeautifulSoup
 
+from .utils import make_external_id, to_iso_datetime
+
 
 def scrape_events_from_jsonld(url: str, source_id: int = 0) -> List[dict[str, Any]]:
     """Fetch a page and extract events described in JSON-LD.
@@ -31,15 +33,20 @@ def scrape_events_from_jsonld(url: str, source_id: int = 0) -> List[dict[str, An
             continue
 
         for item in _extract_event_objects(data):
+            start = to_iso_datetime(item.get("startDate"))
+            end = to_iso_datetime(item.get("endDate"), end=True)
+            ext_id = item.get("@id") or item.get("url")
+            if not ext_id:
+                ext_id = make_external_id(url, item.get("name", ""), start or "")
             events.append(
                 {
                     "source_id": source_id,
-                    "external_id": item.get("@id") or item.get("url"),
+                    "external_id": ext_id,
                     "title": item.get("name", ""),
                     "description": item.get("description", ""),
                     "location": _parse_location(item.get("location")),
-                    "start_time": item.get("startDate"),
-                    "end_time": item.get("endDate"),
+                    "start_time": start,
+                    "end_time": end,
                     "url": item.get("url", url),
                 }
             )
