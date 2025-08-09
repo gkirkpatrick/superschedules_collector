@@ -6,6 +6,7 @@ from typing import Any, List
 from openai import APIStatusError, OpenAI
 from pydantic import BaseModel, Field
 from playwright.sync_api import sync_playwright
+from urllib.parse import urljoin
 
 from .utils import make_external_id, to_iso_datetime
 
@@ -39,17 +40,37 @@ SYSTEM_PROMPT = (
 )
 
 
-def fetch_rendered_text(url: str) -> str:
-    """Return rendered text content for ``url``.
+def _discover_iframe(url: str) -> str | None:
+    """Return iframe source URL for ``url`` if one exists."""
+    try:
+        resp = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=20)
+        resp.raise_for_status()
+    except requests.RequestException:
+        return None
+    soup = BeautifulSoup(resp.text, "html.parser")
+    iframe = soup.find("iframe")
+    if iframe and iframe.get("src"):
+        return urljoin(url, iframe["src"])
+    return None
 
-    The page is rendered in a headless Chromium browser, ``header`` and
-    ``footer`` elements are removed, and the remaining visible text is
-    returned—similar to selecting all text and copying it.
-    """
+
+def fetch_rendered_text(url: str) -> str:
+    """Return rendered text content for ``url`` or its iframe."""
+    target = _discover_iframe(url) or url
     with sync_playwright() as pw:
         browser = pw.chromium.launch()
-        page = browser.new_page()
-        page.goto(url, wait_until="networkidle")
+        page = browser.new_page(user_agent="Mozilla/5.0")
+        page.goto(target, wait_until="domcontentloaded")
+        if target == url:
+            iframe_el = page.query_selector("iframe")
+            if iframe_el:
+                src = iframe_el.get_attribute("src")
+                if src:
+                    target = urljoin(url, src)
+                    page.goto(target, wait_until="networkidle")
+        else:
+            page.wait_for_load_state("networkidle")
+
         page.evaluate("const h=document.querySelector('header'); if(h) h.remove();")
         page.evaluate("const f=document.querySelector('footer'); if(f) f.remove();")
         text = page.evaluate("document.body.innerText")
