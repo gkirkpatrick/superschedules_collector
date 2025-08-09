@@ -20,7 +20,7 @@ IFRAME_HTML = (
 )
 
 
-def fake_get(url, timeout=30):  # pylint: disable=unused-argument
+def fake_get(url, **kwargs):  # pylint: disable=unused-argument
     resp = Mock()
     resp.raise_for_status = lambda: None
     if url == PARENT_URL:
