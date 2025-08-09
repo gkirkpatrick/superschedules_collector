@@ -8,6 +8,7 @@ from typing import Any, List, Optional
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
+from urllib.parse import urljoin
 
 load_dotenv()
 
@@ -64,6 +65,23 @@ def scrape_and_extract_events(
 
         if not isinstance(event, dict):
             continue
+
+        # If the LLM did not provide a specific URL for the event,
+        # attempt to find an anchor in the original block whose text matches
+        # the event title and use its href. Fallback to the page URL.
+        if not event.get("source_url") or event.get("source_url") == url:
+            title = (event.get("title") or "").strip().lower()
+            if title:
+                candidate_url: Optional[str] = None
+                for a_tag in block.find_all("a"):
+                    text = a_tag.get_text(strip=True).lower()
+                    if title in text:
+                        href = a_tag.get("href")
+                        if href:
+                            candidate_url = urljoin(url, href)
+                            break
+                if candidate_url:
+                    event["source_url"] = candidate_url
 
         events.append(event)
 
