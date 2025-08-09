@@ -6,6 +6,7 @@ from typing import Any, List
 
 import requests
 from bs4 import BeautifulSoup
+from urllib.parse import urljoin
 
 from .utils import make_external_id, to_iso_datetime
 
@@ -38,16 +39,22 @@ def scrape_events_from_jsonld(url: str, source_id: int = 0) -> List[dict[str, An
             ext_id = item.get("@id") or item.get("url")
             if not ext_id:
                 ext_id = make_external_id(url, item.get("name", ""), start or "")
+
+            title = item.get("name", "")
+            event_url = item.get("url")
+            if not event_url:
+                event_url = _find_url_for_title(soup, title, url) or url
+
             events.append(
                 {
                     "source_id": source_id,
                     "external_id": ext_id,
-                    "title": item.get("name", ""),
+                    "title": title,
                     "description": item.get("description") or "",
                     "location": _parse_location(item.get("location")),
                     "start_time": start,
                     "end_time": end,
-                    "url": item.get("url", url),
+                    "url": event_url,
                 }
             )
 
@@ -80,3 +87,17 @@ def _parse_location(location: Any) -> str:
     if isinstance(location, str):
         return location
     return ""
+
+
+def _find_url_for_title(soup: BeautifulSoup, title: str, base_url: str) -> str | None:
+    """Search ``soup`` for an anchor matching ``title`` and return its href."""
+    if not title:
+        return None
+    title_lower = title.strip().lower()
+    for a_tag in soup.find_all("a"):
+        text = a_tag.get_text(strip=True).lower()
+        if title_lower in text:
+            href = a_tag.get("href")
+            if href:
+                return urljoin(base_url, href)
+    return None
