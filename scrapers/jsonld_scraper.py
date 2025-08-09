@@ -44,8 +44,19 @@ def scrape_events_from_jsonld(url: str, source_id: int = 0) -> List[dict[str, An
                 continue
 
             for item in _extract_event_objects(data):
-                start = to_iso_datetime(item.get("startDate"))
-                end = to_iso_datetime(item.get("endDate"), end=True)
+                start_raw = item.get("startDate")
+                if start_raw and "T" not in start_raw and item.get("startTime"):
+                    start_raw = f"{start_raw}T{item['startTime']}"
+                start = to_iso_datetime(start_raw)
+
+                end_raw = item.get("endDate")
+                end_time = item.get("endTime")
+                if end_raw and "T" not in end_raw and end_time:
+                    end_raw = f"{end_raw}T{end_time}"
+                elif not end_raw and end_time and start_raw:
+                    start_date = start_raw.split("T")[0]
+                    end_raw = f"{start_date}T{end_time}"
+                end = to_iso_datetime(end_raw, end=(end_raw is not None and "T" not in end_raw))
                 ext_id = item.get("@id") or item.get("url")
                 if not ext_id:
                     ext_id = make_external_id(base_url, item.get("name", ""), start or "")
