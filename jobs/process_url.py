@@ -18,19 +18,26 @@ if os.getenv("SCRAPER_DEBUG"):
 
 def run(url: str) -> None:
     """Scrape events from ``url`` and post them to the backend."""
+    events: List[dict] = []
+    method = ""
+
+    logger.info("Attempting JSON-LD scrape")
     try:
-        logger.info("Attempting JSON-LD scrape")
-        events: List[dict] = scrape_events_from_jsonld(url)
+        events = scrape_events_from_jsonld(url)
         logger.info("JSON-LD scraper returned %d event(s)", len(events))
         method = "jsonld"
-        if not events:
-            logger.info("No JSON-LD events found, falling back to LLM")
-            events = scrape_events_from_llm(url)
-            method = "llm"
-            logger.info("LLM scraper returned %d event(s)", len(events))
     except Exception as exc:
-        print("❌ Failed to fetch or parse page:", exc)
-        return
+        logger.info("JSON-LD scraper failed: %s", exc)
+
+    if not events:
+        logger.info("Falling back to LLM scrape")
+        try:
+            events = scrape_events_from_llm(url)
+            logger.info("LLM scraper returned %d event(s)", len(events))
+            method = "llm"
+        except Exception as exc:
+            print("❌ Failed to fetch or parse page:", exc)
+            return
 
     logger.info("Using %s scraper", method)
 

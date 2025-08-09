@@ -26,7 +26,12 @@ def scrape_events_from_jsonld(url: str, source_id: int = 0) -> List[dict[str, An
     """
 
     def _fetch(url_to_fetch: str) -> BeautifulSoup:
-        resp = requests.get(url_to_fetch, timeout=30)
+        """Return a BeautifulSoup for ``url_to_fetch`` with a browser UA."""
+        resp = requests.get(
+            url_to_fetch,
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=30,
+        )
         resp.raise_for_status()
         return BeautifulSoup(resp.text, "html.parser")
 
