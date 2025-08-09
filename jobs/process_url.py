@@ -7,6 +7,7 @@ import logging
 from typing import List
 
 from ingest.api_client import post_event
+from ingest.description_generator import generate_description
 from scrapers.jsonld_scraper import scrape_events_from_jsonld
 from scrapers.llm_scraper import scrape_events_from_llm
 
@@ -43,6 +44,8 @@ def run(url: str) -> None:
             logger.info("  %s", event)
 
     for event in events:
+        if not event.get("description"):
+            event["description"] = generate_description(event)
         try:
             result = post_event(event)
             print("✅ Posted:", result.get("title", "<unknown>"))

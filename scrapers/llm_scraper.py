@@ -120,7 +120,7 @@ def scrape_events_from_llm(url: str, source_id: int = 0) -> List[dict[str, Any]]
                 "source_id": source_id,
                 "external_id": ext_id,
                 "title": item.get("title", ""),
-                "description": item.get("description", ""),
+                "description": item.get("description") or "",
                 "location": item.get("location", ""),
                 "start_time": start,
                 "end_time": end,
