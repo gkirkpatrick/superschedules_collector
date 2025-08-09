@@ -43,7 +43,7 @@ def scrape_events_from_jsonld(url: str, source_id: int = 0) -> List[dict[str, An
                     "source_id": source_id,
                     "external_id": ext_id,
                     "title": item.get("name", ""),
-                    "description": item.get("description", ""),
+                    "description": item.get("description") or "",
                     "location": _parse_location(item.get("location")),
                     "start_time": start,
                     "end_time": end,
