@@ -7,10 +7,13 @@ from openai import APIStatusError, OpenAI
 from pydantic import BaseModel, Field
 from playwright.sync_api import sync_playwright
 
+from .utils import make_external_id, to_iso_datetime
+
 client = OpenAI()
 
 
 class Event(BaseModel):
+    external_id: str | None = None
     title: str
     description: str | None = None
     start: str
@@ -31,7 +34,8 @@ SYSTEM_PROMPT = (
     "- Output *only* fields defined by the schema.\n"
     "- Normalize dates to ISO 8601; if only a day is given, use YYYY-MM-DD.\n"
     "- If timezone is implied by the venue or page, include it (IANA tz).\n"
-    "- Include the canonical event URL when present."
+    "- Include the canonical event URL when present.\n"
+    "- Include external_id when a stable ID (like a URL) exists."
 )
 
 
@@ -85,15 +89,20 @@ def scrape_events_from_llm(url: str, source_id: int = 0) -> List[dict[str, Any]]
     data = parse_events(url)
     events: List[dict[str, Any]] = []
     for item in data.get("events", []):
+        start = to_iso_datetime(item.get("start"), item.get("timezone"))
+        end = to_iso_datetime(item.get("end"), item.get("timezone"), end=True)
+        ext_id = item.get("external_id") or item.get("url")
+        if not ext_id:
+            ext_id = make_external_id(url, item.get("title", ""), start or "")
         events.append(
             {
                 "source_id": source_id,
-                "external_id": item.get("url"),
+                "external_id": ext_id,
                 "title": item.get("title", ""),
                 "description": item.get("description", ""),
                 "location": item.get("location", ""),
-                "start_time": item.get("start"),
-                "end_time": item.get("end"),
+                "start_time": start,
+                "end_time": end,
                 "url": item.get("url", url),
             }
         )
