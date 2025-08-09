@@ -39,8 +39,16 @@ def post_event(event: dict[str, Any]) -> dict[str, Any]:
     url = f"{API_BASE_URL}/events/"
     headers = _make_headers()
     _log_request("post", url, headers, event)
-    response = requests.post(url, json=event, headers=headers, timeout=30)
-    response.raise_for_status()
+    try:
+        response = requests.post(url, json=event, headers=headers, timeout=30)
+        response.raise_for_status()
+    except requests.RequestException as exc:  # pragma: no cover - network errors
+        logger.error("API request failed: %s", exc)
+        logger.error("Payload: %s", event)
+        if getattr(exc, "response", None) is not None:
+            logger.error("Status: %s", exc.response.status_code)
+            logger.error("Response: %s", exc.response.text)
+        raise
     return response.json()
 
 
@@ -50,6 +58,14 @@ def post_dummy_source() -> dict[str, Any]:
     payload = {"name": "Dummy Source", "url": "https://example.com"}
     headers = _make_headers()
     _log_request("post", url, headers, payload)
-    response = requests.post(url, json=payload, headers=headers, timeout=30)
-    response.raise_for_status()
+    try:
+        response = requests.post(url, json=payload, headers=headers, timeout=30)
+        response.raise_for_status()
+    except requests.RequestException as exc:  # pragma: no cover - network errors
+        logger.error("API request failed: %s", exc)
+        logger.error("Payload: %s", payload)
+        if getattr(exc, "response", None) is not None:
+            logger.error("Status: %s", exc.response.status_code)
+            logger.error("Response: %s", exc.response.text)
+        raise
     return response.json()
