@@ -14,6 +14,9 @@ from .utils import make_external_id, to_iso_datetime
 def scrape_events_from_jsonld(url: str, source_id: int = 0) -> List[dict[str, Any]]:
     """Fetch a page and extract events described in JSON-LD.
 
+    This scraper also follows a single iframe when no JSON-LD is found on the
+    initial page, which is common for sites that embed external calendars.
+
     Args:
         url: Page URL containing JSON-LD event data.
         source_id: Numeric source identifier to include on each event.
@@ -21,42 +24,56 @@ def scrape_events_from_jsonld(url: str, source_id: int = 0) -> List[dict[str, An
     Returns:
         A list of event dictionaries matching the API schema.
     """
-    response = requests.get(url, timeout=30)
-    response.raise_for_status()
 
-    soup = BeautifulSoup(response.text, "html.parser")
-    events: List[dict[str, Any]] = []
+    def _fetch(url_to_fetch: str) -> BeautifulSoup:
+        resp = requests.get(url_to_fetch, timeout=30)
+        resp.raise_for_status()
+        return BeautifulSoup(resp.text, "html.parser")
 
-    for tag in soup.find_all("script", type="application/ld+json"):
-        try:
-            data = json.loads(tag.string or "")
-        except json.JSONDecodeError:
-            continue
+    def _parse(soup: BeautifulSoup, base_url: str) -> List[dict[str, Any]]:
+        events: List[dict[str, Any]] = []
+        for tag in soup.find_all("script", type="application/ld+json"):
+            try:
+                data = json.loads(tag.string or "")
+            except json.JSONDecodeError:
+                continue
 
-        for item in _extract_event_objects(data):
-            start = to_iso_datetime(item.get("startDate"))
-            end = to_iso_datetime(item.get("endDate"), end=True)
-            ext_id = item.get("@id") or item.get("url")
-            if not ext_id:
-                ext_id = make_external_id(url, item.get("name", ""), start or "")
+            for item in _extract_event_objects(data):
+                start = to_iso_datetime(item.get("startDate"))
+                end = to_iso_datetime(item.get("endDate"), end=True)
+                ext_id = item.get("@id") or item.get("url")
+                if not ext_id:
+                    ext_id = make_external_id(base_url, item.get("name", ""), start or "")
 
-            title = item.get("name", "")
-            event_url = item.get("url")
-            if not event_url:
-                event_url = _find_url_for_title(soup, title, url) or url
+                title = item.get("name", "")
+                event_url = item.get("url")
+                if not event_url:
+                    event_url = _find_url_for_title(soup, title, base_url) or base_url
 
-            events.append(
-                {
-                    "source_id": source_id,
-                    "external_id": ext_id,
-                    "title": title,
-                    "description": item.get("description") or "",
-                    "location": _parse_location(item.get("location")),
-                    "start_time": start,
-                    "end_time": end,
-                    "url": event_url,
-                }
-            )
+                events.append(
+                    {
+                        "source_id": source_id,
+                        "external_id": ext_id,
+                        "title": title,
+                        "description": item.get("description") or "",
+                        "location": _parse_location(item.get("location")),
+                        "start_time": start,
+                        "end_time": end,
+                        "url": event_url,
+                    }
+                )
+        return events
+
+    soup = _fetch(url)
+    events = _parse(soup, url)
+
+    # If no events were found and the page has an iframe, try fetching its content
+    if not events:
+        iframe = soup.find("iframe")
+        if iframe and iframe.get("src"):
+            iframe_url = urljoin(url, iframe["src"])
+            iframe_soup = _fetch(iframe_url)
+            events = _parse(iframe_soup, iframe_url)
 
     return events
 
