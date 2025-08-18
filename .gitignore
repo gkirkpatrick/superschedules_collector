@@ -4,12 +4,18 @@ __pycache__/
 !.env.example
 *.sqlite3
 
-# Django static files
-staticfiles/
-
 # Virtual environments
 venv/
 ENV/
+collector_dev/
 
 # VSCode
 .vscode/
+
+# Temporary files
+*.swp
+*.tmp
+*~
+
+# Test files (temporary)
+test_openai_responses.py
