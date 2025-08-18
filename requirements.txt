@@ -5,3 +5,4 @@ requests-html
 openai
 pydantic
 playwright
+pytest
