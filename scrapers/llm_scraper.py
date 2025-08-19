@@ -3,10 +3,12 @@ from __future__ import annotations
 
 from typing import Any, List
 
+import requests
 from openai import APIStatusError, OpenAI
 from pydantic import BaseModel, Field
 from playwright.sync_api import sync_playwright
 from urllib.parse import urljoin
+from bs4 import BeautifulSoup
 
 from .utils import make_external_id, to_iso_datetime
 

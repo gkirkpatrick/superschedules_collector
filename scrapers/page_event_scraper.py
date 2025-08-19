@@ -211,6 +211,12 @@ def process_section_with_llm(section: str, source_url: str, section_html: Option
     }
     
     try:
+        # Log the prompt for testing with local LLMs
+        logger.info(f"=== PROMPT BEING SENT TO LLM ===")
+        logger.info(f"Model: {OPENAI_MODEL}")
+        logger.info(f"Prompt: {prompt}")
+        logger.info(f"=== END PROMPT ===")
+        
         response = requests.post(OPENAI_API_URL, headers=headers, json=payload, timeout=60)
         response.raise_for_status()
         
