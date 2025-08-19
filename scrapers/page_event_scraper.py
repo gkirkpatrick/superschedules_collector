@@ -263,6 +263,32 @@ def find_urls_in_section(section: str, base_url: str) -> List[str]:
     # Also look for relative URLs if we have the original HTML
     return list(set(urls))
 
+def detect_iframe_calendar(soup: BeautifulSoup, base_url: str) -> Optional[str]:
+    """
+    Detect if the page contains an iframe that likely holds calendar/event content.
+    
+    Returns the iframe URL if found, None otherwise.
+    """
+    iframes = soup.find_all('iframe')
+    
+    for iframe in iframes:
+        src = iframe.get('src')
+        if not src:
+            continue
+            
+        # Convert to absolute URL
+        iframe_url = urljoin(base_url, src)
+        
+        # Check if iframe likely contains calendar/events
+        iframe_indicators = ['calendar', 'event', 'schedule', 'booking']
+        src_lower = src.lower()
+        
+        if any(indicator in src_lower for indicator in iframe_indicators):
+            logger.info(f"Found potential calendar iframe: {iframe_url}")
+            return iframe_url
+    
+    return None
+
 def scrape_page_events(
     url: str, 
     source_id: Optional[int] = None,
@@ -270,7 +296,7 @@ def scrape_page_events(
     visited_urls: Optional[Set[str]] = None
 ) -> List[dict[str, Any]]:
     """
-    Main function implementing the 5-step page event collection process.
+    Main function implementing the 5-step page event collection process with iframe detection.
     
     Args:
         url: URL to scrape
@@ -333,6 +359,22 @@ def scrape_page_events(
                             visited_urls
                         )
                         events.extend(recursive_events)
+        
+        # Enhanced Step 4: If no events found, check for calendar iframes
+        if not events and max_depth > 0:
+            iframe_url = detect_iframe_calendar(soup, url)
+            if iframe_url and iframe_url not in visited_urls:
+                logger.info(f"No events found on main page, trying iframe: {iframe_url}")
+                iframe_events = scrape_page_events(
+                    iframe_url, 
+                    source_id, 
+                    max_depth - 1, 
+                    visited_urls
+                )
+                events.extend(iframe_events)
+                
+                if iframe_events:
+                    logger.info(f"Successfully extracted {len(iframe_events)} events from iframe")
     
     except Exception as e:
         logger.error(f"Error scraping {url}: {e}")
