@@ -1,0 +1,21 @@
+{
+  "test_config": {
+    "total_tests": 30,
+    "models_tested": 1,
+    "prompts_tested": 30,
+    "context_sizes": [
+      4000
+    ]
+  },
+  "model_stats": {
+    "gemma2:latest_4000": {
+      "total_tests": 30,
+      "success_rate": 1.0,
+      "avg_response_time": 3.308162506421407,
+      "valid_json_rate": 1.0,
+      "context_sizes_tested": [
+        4000
+      ]
+    }
+  }
+}

@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "name": "am-1:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 9:00am-1:00pm\nSample New Programing for Older Adults (Age 55+)\nUnion Church\n485 Columbus Ave\nSouth End\n,\nMA\n02118\nUnited States\nsend an email\n617-635-3979\nPrice:\nFREE\nBoston's Age Strong Commission is activating Union Church with older adult programming!\nEvent details\nfor\nSample New Programing for Older Adults (Age 55+)\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 2,
+    "name": "am-11:00am",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 10:00am-11:00am\nHow to Improve Your Credit And Increase Your Score\nsend an email\nPrice:\nFREE\nA good credit score saves you money by opening the door to cheaper loans, better credit card offers, and greater job and housing opportunities.\nEvent website\nfor\nHow to Improve Your Credit And Increase Your Score\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 3,
+    "name": "am-11:30am",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 10:00am-11:30am\nCity Hall On The Go: West Roxbury\nRoche Bros. West Roxbury\n1800 Centre Street\nBoston\n,\nMA\n02132\nUnited States\nsend an email\nPrice:\nFREE\nJoin us on August 19, 2025, for a scheduled stop at Roche Bros. West Roxbury at 1800 Centre Street,\u00a0from 10:00 - 11:30 a.m.\nEvent details\nfor\nCity Hall On The Go: West Roxbury\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 4,
+    "name": "am-1:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 10:30am-1:00pm\nImmigrant Advancement Community Office Hours\n365 Bremen St.\nBoston\n,\nMA\n02128\nUnited States\nsend an email\n617-308-1700\nPrice:\nFREE\nJoin us for our in-person Community Office Hours!\nEvent details\nfor\nImmigrant Advancement Community Office Hours\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 5,
+    "name": "am-12:30pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 11:00am-12:30pm\nSuits and Smiles\n30 Dimock st.\n2nd Floor\nRoxbury\n,\nMA\n02119\nUnited States\nsend an email\n617-685-8187\nPrice:\nFREE\nEvent details\nfor\nSuits and Smiles\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 6,
+    "name": "pm-2:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 12:30pm-2:00pm\nCity Hall On The Go: Roslindale\nRoslindale Branch of the Boston Public Library\n4244 Washington Street\nBoston\n,\nMA\n02131\nUnited States\nsend an email\nPrice:\nFREE\nJoin us on August 19, 2025, for a scheduled stop at Roslindale Branch of the Boston Public Library at 4244 Washington Street,\u00a0from 12:30 - 2:00 p.m.\nEvent details\nfor\nCity Hall On The Go: Roslindale\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 7,
+    "name": "pm-5:30pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 3:30pm-5:30pm\nFree Bike Repair at BPL East Boston\n365 Bremen Street\nBoston\n,\nMA\n02128\nUnited States\nsend an email\nPrice:\nFREE\nHave a flat tire? Need your brakes or gears adjusted? Join us for a free, hands-on Bike Repair Workshop.\nEvent details\nfor\nFree Bike Repair at BPL East Boston\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 8,
+    "name": "pm-7:30pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 5:30pm-7:30pm\nTextiles Untangled - Faneuil BPL\n419 Faneuil St.\nBoston\n,\nMA\n02135\nUnited States\nsend an email\nPrice:\nFREE\nThis event has been canceled due to low enrollment.\nTextiles are everywhere!\u00a0They\u2019re In our clothing, furniture, toys and even computers! But what exactly are textiles made from? How far do clothes travel before we buy them?\nEvent details\nfor\nTextiles Untangled - Faneuil BPL\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 9,
+    "name": "pm-7:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 5:30pm-7:00pm\nOffice of Housing Stability Virtual Legal Clinic\nThis is a virtual event\nBoston\n,\nMA\n02201\nUnited States\nsend an email\n617-635-4200\nPrice:\nFREE\nEvery week, the Office of Housing Stability (OHS) hosts a virtual clinic for small landlords and tenants.\nEvent website\nfor\nOffice of Housing Stability Virtual Legal Clinic\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 10,
+    "name": "pm-6:30pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 5:30pm-6:30pm\nParks Fitness: Yoga Class with Nikita\nWinthrop Square Training Field\n55 Winthrop Street\nCharlestown\n,\nMA\n02128\nUnited States\nsend an email\n617-635-4505\nPrice:\nFREE\nParticipate in FREE fitness classes offered by one of our certified instructors. Our classes are a partnership between the Boston Parks and Recreation Department and the Boston Public Health Commission. The series is sponsored by\u00a0Blue Cross Blue Shield of Massachusetts.\nEvent details\nfor\nParks Fitness: Yoga Class with Nikita\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 11,
+    "name": "pm-8:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 6:00pm-8:00pm\nRinger Park Tree Community Meeting\nZoom\nVirtual\n,\nMA\nUnited States\nsend an email\nPrice:\nFREE\nJoin us to learn which trees must be removed in order to construct the park improvements.\nEvent website\nfor\nRinger Park Tree Community Meeting\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 12,
+    "name": "pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 6:00pm\nDorchester: 8 Frost Avenue Abutters Meeting\nVIRTUAL\nVIA ZOOM\n,\nUnited States\nsend an email\nPrice:\nFREE\nMulti-family townhouse style addition. Existing single-family to be kept with three townhouse-style unit addition on rear for a total of four residential units as per plans.\nEvent details\nfor\nDorchester: 8 Frost Avenue Abutters Meeting\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 13,
+    "name": "pm-7:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 6:00pm-7:00pm\nAllston: 26 Windom Street Abutters Meeting\nVRITUAL\nVIA ZOOM\n,\nUnited States\nsend an email\nPrice:\nFREE\nConstruct a two-story rear addition to the existing single-family home.\nEvent details\nfor\nAllston: 26 Windom Street Abutters Meeting\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 14,
+    "name": "pm-7:30pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 6:30pm-7:30pm\nParks Fitness: Family Zumba with Carmen\nHunt-Almont Park\n40 Almont St\nMattapan\n,\nMA\n02126\nUnited States\nsend an email\n617-635-4505\nPrice:\nFREE\nParticipate in FREE fitness classes offered by one of our certified instructors. Our classes are a partnership between the Boston Parks and Recreation Department and the Boston Public Health Commission. The series is sponsored by\u00a0Blue Cross Blue Shield of Massachusetts.\nEvent details\nfor\nParks Fitness: Family Zumba with Carmen\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 15,
+    "name": "pm-7:30pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 6:30pm-7:30pm\nParks Fitness: Virtual Dance Fit with Kristin\nVIRTUAL CLASS\nBoston\n,\nMA\nUnited States\nsend an email\n617-635-4505\nPrice:\nFREE\nParticipate in FREE virtual fitness classes offered by one of our certified instructors. Our classes are a partnership between the Boston Parks and Recreation Department and the Boston Public Health Commission. The series is sponsored by\u00a0Blue Cross Blue Shield of Massachusetts.\nEvent details\nfor\nParks Fitness: Virtual Dance Fit with Kristin\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 16,
+    "name": "pm-8:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 7:00pm-8:00pm\nRoslindale: 83-85 Cornell Street Abutters Meeting\nVIRTUAL\nVIA ZOOM\n,\nUnited States\nsend an email\nPrice:\nFREE\nAddition to an existing dormer on rear of two-family to create wider bathroom and larger closet.\nEvent details\nfor\nRoslindale: 83-85 Cornell Street Abutters Meeting\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 17,
+    "name": "pm-8:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 7:00pm-8:00pm\nMassachusetts Integrated Energy Planning (IEP) Stakeholder Working Group Virtual Listening Session\nOnline Meeting\nBoston\n,\nMA\n02201\nUnited States\nsend an email\n865-607-6618\nPrice:\nFREE\nMassachusetts Integrated Energy Planning (IEP) Stakeholder Working Group will hold a virtual listening session on August 19 at 7 p.m.\nEvent details\nfor\nMassachusetts Integrated Energy Planning (IEP) Stakeholder Working Group Virtual Listening Session\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 18,
+    "name": "pm-8:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 7:00pm-8:00pm\nAllston: 27-29 Everett Street Abutters Meeting\nVIRTUAL\nVIA ZOOM\n,\nUnited States\nsend an email\nPrice:\nFREE\nChange of occupancy from a three-unit building to a six-unit building by\nway of rear/vertical addition with minor interior changes to the existing structure.\nEvent details\nfor\nAllston: 27-29 Everett Street Abutters Meeting\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 19,
+    "name": "am-11:00am",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 10:00am-11:00am\nResumes That Work\nGoodwill Boston Career Center\n1010 Harrison Avenue\nRoxbury\n,\nMA\n02119\nUnited States\nsend an email\n617-541-1477\nPrice:\nFREE\nPresented by the Goodwill Boston Career Center.\nEvent website\nfor\nResumes That Work\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 20,
+    "name": "am-11:30am",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 10:00am-11:30am\nCity Hall On The Go: Dorchester\nUphams Corner Branch of the Boston Public Library\n500 Columbia Road\nBoston\n,\nMA\n02125\nUnited States\nsend an email\nPrice:\nFREE\nJoin us on August 20, 2025, for a scheduled stop at Uphams Corner Branch of the Boston Public Library at 500 Columbia Road,\u00a0from 10:00 - 11:30 a.m.\nEvent details\nfor\nCity Hall On The Go: Dorchester\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 21,
+    "name": "am-1:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 11:00am-1:00pm\nCertification Office Hours for Minority / Women-Owned Businesses (MWBE)\nZoom\nBoston\n,\nMA\n02201\nUnited States\nsend an email\nPrice:\nFREE\nThe Supplier Diversity Program hosts weekly virtual certification office hours for\u00a0Minority / Women-owned Business Enterprises (MWBE)\u00a0every Wednesday from 11 a.m. -\u00a01 p.m.\nEvent website\nfor\nCertification Office Hours for Minority / Women-Owned Businesses (MWBE)\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 22,
+    "name": "pm-1:30pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 12:00pm-1:30pm\nCommunity Preservation Act Virtual Meet And Greet\nVirtual\nBoston\n,\nMA\n02201\nUnited States\nsend an email\nPrice:\nFREE\nJoin us for a conversation with the\u00a0Community Preservation Act (CPA) team to learn how the CPA works, including the application and evaluation process, relevant state requirements, and how CPA funds can help preserve and enhance your neighborhood.\nEvent website\nfor\nCommunity Preservation Act Virtual Meet And Greet\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 23,
+    "name": "pm-3:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 12:00pm-3:00pm\nFree Immigration Consultations\nBy phone only\nBoston\n,\nMA\n02201\nUnited States\nsend an email\n617-635-2980\nPrice:\nFREE\nAsk an immigration lawyer for advice.\nEvent details\nfor\nFree Immigration Consultations\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 24,
+    "name": "pm-2:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 12:30pm-2:00pm\nCity Hall On The Go: Allston\nRinger Park\n76 Allston Street\nBoston\n,\nMA\n02134\nUnited States\nsend an email\nPrice:\nFREE\nJoin us on August 20, 2025, for a scheduled stop at Ringer Park\u00a0at 76 Allston Street,\u00a0from 12:30 - 2:00 p.m.\nEvent details\nfor\nCity Hall On The Go: Allston\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 25,
+    "name": "pm-4:30pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 1:30pm-4:30pm\nBike Town Pop-Up At City Hall Plaza\n1 City Hall Square\nBoston\n,\nMA\n02201-2006\nUnited States\nsend an email\nPrice:\nFREE\nEvent details\nfor\nBike Town Pop-Up At City Hall Plaza\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 26,
+    "name": "pm-5:30pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 3:30pm-5:30pm\nFree Bike Repair at BPL Mattapan\n1350 Blue Hill Ave\nBoston\n,\nMA\n02126\nUnited States\nsend an email\nPrice:\nFREE\nHave a flat tire? Need your brakes or gears adjusted? Join us for a free, hands-on Bike Repair Workshop.\nEvent details\nfor\nFree Bike Repair at BPL Mattapan\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 27,
+    "name": "pm-9:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 5:15pm-9:00pm\nTruth Matters: Disagreement in an Age of Division\nThe Embrace\n139 Tremont Street\nBoston\n,\nMA\n02108\nUnited States\nsend an email\nPrice:\nFREE\nThe Mayor's Office of Arts and Culture\nand\u00a0The Hutchins Center for African and African American Research at Harvard University\nwelcome you back to The Embrace for another season of public conversations on democracy, justice, memory, and values.\nEvent website\nfor\nTruth Matters: Disagreement in an Age of Division\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 28,
+    "name": "pm-7:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 6:00pm-7:00pm\nParks Fitness: Virtual Yoga with Christine\nVIRTUAL CLASS\nBoston\n,\nMA\nUnited States\nsend an email\n617-635-4505\nPrice:\nFREE\nParticipate in FREE virtual fitness classes offered by one of our certified instructors. Our classes are a partnership between the Boston Parks and Recreation Department and the Boston Public Health Commission. The series is sponsored by\u00a0Blue Cross Blue Shield of Massachusetts.\nEvent details\nfor\nParks Fitness: Virtual Yoga with Christine\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 29,
+    "name": "pm-7:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 6:00pm-7:00pm\nParks Fitness: Ritmo (Rhythm) and Power Class with Joanna\nAdams Park\n4225 Washington Street\nRoslindale\n,\nMA\nUnited States\nsend an email\n617-635-4505\nPrice:\nFREE\nParticipate in FREE fitness classes offered by one of our certified instructors. Our classes are a partnership between the Boston Parks and Recreation Department and the Boston Public Health Commission. The series is sponsored by\u00a0Blue Cross Blue Shield of Massachusetts.\nEvent details\nfor\nParks Fitness: Ritmo (Rhythm) and Power Class with Joanna\nURL: https://www.boston.gov/events"
+  },
+  {
+    "id": 30,
+    "name": "pm-7:00pm",
+    "prompt": "Return only valid JSON, no markdown or other text.\n\nSchema: {\"source_id\": null, \"external_id\": \"url_or_id\", \"title\": \"required\", \"description\": \"text\", \"location\": \"place\", \"start_time\": \"2024-01-01T10:00:00-05:00\", \"end_time\": \"time\", \"url\": \"link\", \"metadata_tags\": [\"categories\", \"event_types\", \"keywords\"]}\n\nUse Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.\n\nContent: 6:00pm-7:00pm\nSouth Boston: 395 W Fourth Street Abutters Meeting\nVIRTUAL\nVIA ZOOM\n,\nUnited States\nsend an email\nPrice:\nFREE\nConfirm occupancy as single-family. Change of occupancy to two-family home. New kitchens and bathrooms. New HVAC and electric service. New two-story deck with metal spiral stairway for unit two second egress. Extension of living space into basement with new finished habitable area for unit one.\nEvent details\nfor\nSouth Boston: 395 W Fourth Street Abutters Meeting\nURL: https://www.boston.gov/events"
+  }
+]
