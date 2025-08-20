@@ -20,9 +20,9 @@ jobs:
     
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      pull-requests: read
-      issues: read
+      contents: write # Required for Claude to create branches and commits
+      pull-requests: write # Required for Claude to create/update PRs and comments
+      issues: write # Required for Claude to update issue comments
       id-token: write
     
     steps:
