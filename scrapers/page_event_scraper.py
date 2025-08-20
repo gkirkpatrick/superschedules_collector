@@ -13,6 +13,7 @@ from bs4 import BeautifulSoup, Tag
 from dotenv import load_dotenv
 
 from ingest.api_client import post_event
+from .pagination_detector import detect_pagination
 
 load_dotenv()
 
@@ -299,16 +300,18 @@ def scrape_page_events(
     url: str, 
     source_id: Optional[int] = None,
     max_depth: int = 2,
-    visited_urls: Optional[Set[str]] = None
+    visited_urls: Optional[Set[str]] = None,
+    follow_pagination: bool = True
 ) -> List[dict[str, Any]]:
     """
-    Main function implementing the 5-step page event collection process with iframe detection.
+    Main function implementing the 5-step page event collection process with pagination support.
     
     Args:
         url: URL to scrape
         source_id: Optional source ID for the events
         max_depth: Maximum recursion depth for following URLs
         visited_urls: Set of already visited URLs to avoid loops
+        follow_pagination: Whether to detect and follow pagination links
         
     Returns:
         List of extracted events
@@ -362,10 +365,40 @@ def scrape_page_events(
                             section_url, 
                             source_id, 
                             max_depth - 1, 
-                            visited_urls
+                            visited_urls,
+                            follow_pagination=False  # Don't follow pagination for recursive URL extraction
                         )
                         events.extend(recursive_events)
         
+        # Step 6: Detect and follow pagination links
+        if follow_pagination and max_depth > 0:
+            try:
+                pagination_result = detect_pagination(url, response.text, OPENAI_API_KEY)
+                
+                if pagination_result.next_urls:
+                    logger.info(f"Found {len(pagination_result.next_urls)} pagination URLs on {url}")
+                    logger.info(f"Pagination type: {pagination_result.pagination_type}, confidence: {pagination_result.confidence:.2f}")
+                    
+                    for next_url in pagination_result.next_urls[:5]:  # Limit to 5 pages to avoid infinite loops
+                        if next_url not in visited_urls:
+                            logger.info(f"Following pagination link: {next_url}")
+                            pagination_events = scrape_page_events(
+                                next_url,
+                                source_id,
+                                max_depth - 1,
+                                visited_urls,
+                                follow_pagination=False  # Don't follow pagination recursively to avoid loops
+                            )
+                            events.extend(pagination_events)
+                            
+                            if pagination_events:
+                                logger.info(f"Found {len(pagination_events)} events on pagination page {next_url}")
+                else:
+                    logger.debug(f"No pagination detected on {url}")
+                    
+            except Exception as e:
+                logger.warning(f"Error during pagination detection on {url}: {e}")
+
         # Enhanced Step 4: If no events found, check for calendar iframes
         if not events and max_depth > 0:
             iframe_url = detect_iframe_calendar(soup, url)
@@ -375,7 +408,8 @@ def scrape_page_events(
                     iframe_url, 
                     source_id, 
                     max_depth - 1, 
-                    visited_urls
+                    visited_urls,
+                    follow_pagination=follow_pagination
                 )
                 events.extend(iframe_events)
                 
@@ -387,13 +421,19 @@ def scrape_page_events(
     
     return events
 
-def scrape_and_save_events(url: str, source_id: Optional[int] = None) -> List[dict[str, Any]]:
+def scrape_and_save_events(url: str, source_id: Optional[int] = None, follow_pagination: bool = True) -> List[dict[str, Any]]:
     """
     Scrape events from a page and save them to the backend API.
     
-    Returns the list of successfully saved events.
+    Args:
+        url: URL to scrape
+        source_id: Optional source ID for the events
+        follow_pagination: Whether to detect and follow pagination links
+    
+    Returns:
+        List of successfully saved events.
     """
-    events = scrape_page_events(url, source_id)
+    events = scrape_page_events(url, source_id, follow_pagination=follow_pagination)
     saved_events = []
     
     for event in events:
