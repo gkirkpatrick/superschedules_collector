@@ -8,7 +8,12 @@ Use --live flag to fetch from live sites instead.
 
 import argparse
 import os
+import sys
 import requests
+
+# Add parent directory to path so we can import scrapers
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from scrapers.pagination_detector import detect_pagination
 
 # Test cases with local HTML files
@@ -28,6 +33,14 @@ TEST_CASES = [
     {
         "url": "https://www.cambridgema.gov/calendars",
         "local_file": "tests/test_data/pagination_samples/cambridgema_gov.html"
+    },
+    {
+        "url": "https://www.brooklinelibrary.org/events",
+        "local_file": "tests/test_data/pagination_samples/brooklinelibrary_events.html"
+    },
+    {
+        "url": "https://www.cambridgema.gov/citycalendar",
+        "local_file": "tests/test_data/pagination_samples/cambridgema_citycalendar.html"
     }
 ]
 
@@ -104,6 +117,48 @@ def test_pagination_detection(use_live=False):
             
     print("\n🎯 Test Complete!")
 
+def test_llm_features(use_live=False):
+    """Test LLM hints and URL following features."""
+    
+    # Check for OpenAI API key
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    if not openai_api_key:
+        try:
+            with open(os.path.expanduser("~/.secret_keys"), "r") as f:
+                openai_api_key = f.read().strip()
+        except FileNotFoundError:
+            print("⚠️  No OpenAI API key found. Skipping LLM tests.")
+            return
+    
+    os.environ["OPENAI_API_KEY"] = openai_api_key
+    
+    if not use_live:
+        print("⚠️  LLM features require live sites. Use --live flag to test.")
+        return
+    
+    print(f"\n🤖 Testing LLM Features")
+    print("=" * 50)
+    
+    try:
+        from scrapers.llm_scraper import scrape_events_from_llm
+        
+        # Test Brookline hints system
+        print(f"\n📄 Testing: Brookline Library Events (Hints)")
+        hints = {'event_containers': ['.media.s-lc-c-evt']}
+        events = scrape_events_from_llm('https://www.brooklinelibrary.org/events', hints=hints)
+        print(f"   ✅ Manual hints found {len(events)} events")
+        
+        # Test Cambridge URL following  
+        print(f"\n📄 Testing: Cambridge Calendar (URL Following)")
+        hints = {'event_containers': ['.eventItem']}
+        events = scrape_events_from_llm('https://www.cambridgema.gov/citycalendar', hints=hints, follow_event_urls=True)
+        print(f"   ✅ URL following found {len(events)} events")
+        
+    except Exception as e:
+        print(f"   ❌ LLM test failed: {e}")
+    
+    print(f"\n🎯 LLM Features Test Complete!")
+
 def main():
     """Main entry point with command line argument parsing."""
     parser = argparse.ArgumentParser(
@@ -119,6 +174,11 @@ def main():
         action="store_true",
         help="Update local HTML snapshots from live sites"
     )
+    parser.add_argument(
+        "--test-llm",
+        action="store_true",
+        help="Also test LLM hints and URL following features (requires --live)"
+    )
     
     args = parser.parse_args()
     
@@ -126,6 +186,8 @@ def main():
         refresh_snapshots()
     else:
         test_pagination_detection(use_live=args.live)
+        if args.test_llm:
+            test_llm_features(use_live=args.live)
 
 def refresh_snapshots():
     """Refresh local HTML snapshots from live sites."""
