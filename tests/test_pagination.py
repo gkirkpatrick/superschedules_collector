@@ -15,19 +15,19 @@ from scrapers.pagination_detector import detect_pagination
 TEST_CASES = [
     {
         "url": "https://www.boston.gov/events",
-        "local_file": "test_data/pagination_samples/boston_gov.html"
+        "local_file": "tests/test_data/pagination_samples/boston_gov.html"
     },
     {
         "url": "https://www.needhamlibrary.org/events", 
-        "local_file": "test_data/pagination_samples/needhamlibrary_org.html"
+        "local_file": "tests/test_data/pagination_samples/needhamlibrary_org.html"
     },
     {
         "url": "https://www.brooklinelibrary.org/events",
-        "local_file": "test_data/pagination_samples/brooklinelibrary_org.html"
+        "local_file": "tests/test_data/pagination_samples/brooklinelibrary_org.html"
     },
     {
         "url": "https://www.cambridgema.gov/calendars",
-        "local_file": "test_data/pagination_samples/cambridgema_gov.html"
+        "local_file": "tests/test_data/pagination_samples/cambridgema_gov.html"
     }
 ]
 
@@ -132,7 +132,7 @@ def refresh_snapshots():
     print("🔄 Refreshing HTML snapshots from live sites")
     print("=" * 50)
     
-    os.makedirs("test_data/pagination_samples", exist_ok=True)
+    os.makedirs("tests/test_data/pagination_samples", exist_ok=True)
     
     for test_case in TEST_CASES:
         url = test_case["url"]

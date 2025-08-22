@@ -11,7 +11,7 @@ from urllib.parse import urljoin
 from .utils import make_external_id, to_iso_datetime
 
 
-def scrape_events_from_jsonld(url: str, source_id: int = 0) -> List[dict[str, Any]]:
+def scrape_events_from_jsonld(url: str, source_id: int = None) -> List[dict[str, Any]]:
     """Fetch a page and extract events described in JSON-LD.
 
     This scraper also follows a single iframe when no JSON-LD is found on the
