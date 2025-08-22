@@ -45,21 +45,11 @@ Edit `config.yaml` to:
 
 ## Legacy Testing Scripts
 
-### Production-Ready Tools (Legacy)
-
-- **`comprehensive_llm_test.py`** - Original testing framework
-  - ⚠️ **Superseded by `test_runner.py`**
-  - Runs all 30 real prompts against OpenAI vs Ollama models
-
-- **`test_gemma2.py`** - Quick speed comparison script  
-  - ⚠️ **Superseded by `test_runner.py`**
-  - Fast 3-iteration test for performance benchmarking
-
 ### Data Processing Tools
 
 - **`parse_prompts.py`** - Converts clean_prompts.txt to structured JSON
   - Creates parsed_prompts.json with 30 test cases
-  - Required input for comprehensive_llm_test.py
+  - Input for testing frameworks
 
 - **`test_prompts.py`** - Captures prompts from live scraper runs
   - Logs LLM interactions for testing with local models
@@ -114,26 +104,9 @@ python test_runner.py --context-sizes 2000 8000 16000
 
 ### Legacy Scripts
 ```bash
-# Original comprehensive test (OpenAI vs Ollama only)
-python comprehensive_llm_test.py
-
-# Quick speed test  
-python test_gemma2.py
-
 # Convert prompts for testing
 python parse_prompts.py
 ```
-
-## Legacy/Experimental Scripts
-
-The following scripts were used during development but are superseded by the production tools above:
-
-- **`compare_llms.py`** - Early comparison script (use comprehensive_llm_test.py instead)
-- **`detailed_comparison.py`** - Experimental detailed analysis
-- **`extract_prompts.py`** - Prompt extraction utility
-- **`quick_test.py`** - Early quick testing script
-- **`test_openai_responses.py`** - OpenAI-specific testing
-- **`test_real_prompts.py`** - Real prompt testing
 
 ## Configuration Notes
 

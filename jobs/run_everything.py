@@ -3,15 +3,11 @@ from __future__ import annotations
 
 from ingest.api_client import post_event
 from mcp.agent import find_events_near_location
-from scrapers.sample_scraper import scrape_events
 
 
 def run() -> None:
     """Run all data collection jobs and post events to API."""
     all_events: list[dict] = []
-
-    # From scrapers
-    all_events.extend(scrape_events())
 
     # From LLM agent
     all_events.extend(find_events_near_location("Needham, MA"))
