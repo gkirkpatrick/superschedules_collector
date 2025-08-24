@@ -245,7 +245,7 @@ def extract_event_urls(url: str, hints: dict = None) -> List[str]:
     return urls
 
 
-def scrape_events_from_llm(url: str, source_id: int = None, hints: dict = None, auto_discover_hints: bool = False, follow_event_urls: bool = False) -> List[dict[str, Any]]:
+def scrape_events_from_llm(url: str, source_id: int = None, hints: dict = None, auto_discover_hints: bool = True, follow_event_urls: bool = True) -> List[dict[str, Any]]:
     """Fetch ``url`` and convert extracted events to the API schema."""
     # If no hints provided but auto-discovery is enabled, try to discover them
     if not hints and auto_discover_hints:
