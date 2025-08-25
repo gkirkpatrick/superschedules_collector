@@ -22,14 +22,17 @@ logger = logging.getLogger(__name__)
 OPENAI_API_URL = os.getenv("OPENAI_API_URL", "https://api.openai.com/v1/chat/completions")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
-# Try to load API key from environment first, then from secret_keys file
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-if not OPENAI_API_KEY:
+
+def get_openai_api_key() -> str | None:
+    """Load OpenAI API key from environment or ~/.secret_keys."""
+    key = os.getenv("OPENAI_API_KEY")
+    if key:
+        return key
     try:
         with open(os.path.expanduser("~/.secret_keys"), "r") as f:
-            OPENAI_API_KEY = f.read().strip()
+            return f.read().strip()
     except FileNotFoundError:
-        OPENAI_API_KEY = None
+        return None
 
 # Optimized event extraction prompt (51% more efficient than original)
 EVENT_EXTRACTION_PROMPT = """Return only valid JSON, no markdown or other text.
@@ -151,9 +154,9 @@ def process_section_with_llm(section: str, source_url: str, section_html: Option
     
     Returns None if no valid event is found or if API call fails.
     """
-    if not OPENAI_API_KEY:
-        logger.warning("OPENAI_API_KEY not set, skipping LLM processing")
-        return None
+    api_key = get_openai_api_key()
+    if not api_key:
+        logger.warning("OPENAI_API_KEY not set, continuing without authentication")
     
     # Look for event URLs in the HTML if available
     event_url = None
@@ -205,11 +208,10 @@ def process_section_with_llm(section: str, source_url: str, section_html: Option
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0,
     }
-    
-    headers = {
-        "Authorization": f"Bearer {OPENAI_API_KEY}",
-        "Content-Type": "application/json",
-    }
+
+    headers = {"Content-Type": "application/json"}
+    if api_key:
+        headers["Authorization"] = f"Bearer {api_key}"
     
     try:
         # Log the prompt for testing with local LLMs
@@ -321,9 +323,10 @@ def scrape_page_events(
     
     if url in visited_urls or max_depth <= 0:
         return []
-    
+
     visited_urls.add(url)
     events = []
+    api_key = get_openai_api_key()
     
     try:
         # Fetch the page
@@ -373,7 +376,7 @@ def scrape_page_events(
         # Step 6: Detect and follow pagination links
         if follow_pagination and max_depth > 0:
             try:
-                pagination_result = detect_pagination(url, response.text, OPENAI_API_KEY)
+                pagination_result = detect_pagination(url, response.text, api_key)
                 
                 if pagination_result.next_urls:
                     logger.info(f"Found {len(pagination_result.next_urls)} pagination URLs on {url}")
