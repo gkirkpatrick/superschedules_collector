@@ -1,7 +1,7 @@
 """FastAPI application for Superschedules Collector API."""
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
 from fastapi import FastAPI, HTTPException
@@ -123,7 +123,7 @@ async def health_check():
     """Health check endpoint."""
     return HealthResponse(
         status="healthy",
-        timestamp=datetime.utcnow().isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         version="1.0.0"
     )
 
@@ -133,7 +133,7 @@ async def liveness_check():
     """Liveness check endpoint for container orchestration."""
     return HealthResponse(
         status="alive",
-        timestamp=datetime.utcnow().isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         version="1.0.0"
     )
 
@@ -145,7 +145,7 @@ async def readiness_check():
     # e.g., database connectivity, external API availability
     return HealthResponse(
         status="ready",
-        timestamp=datetime.utcnow().isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         version="1.0.0"
     )
 
@@ -160,7 +160,7 @@ async def extract_events(request: ExtractRequest):
     - Validates events and generates semantic tags using LLM
     - Returns structured events ready for Django backend
     """
-    start_time = datetime.utcnow()
+    start_time = datetime.now(timezone.utc)
     
     try:
         # Run extraction in thread pool to avoid asyncio conflicts with Playwright
@@ -176,7 +176,7 @@ async def extract_events(request: ExtractRequest):
         extraction_method = result["extraction_method"]
         
         # Calculate processing time
-        end_time = datetime.utcnow()
+        end_time = datetime.now(timezone.utc)
         processing_time = (end_time - start_time).total_seconds()
         
         # Get page title for metadata (simple approach)

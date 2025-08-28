@@ -157,7 +157,8 @@ def process_section_with_llm(section: str, source_url: str, section_html: Option
     """
     api_key = get_openai_api_key()
     if not api_key:
-        logger.warning("OPENAI_API_KEY not set, continuing without authentication")
+        logger.warning("OPENAI_API_KEY not set, cannot process with LLM")
+        return None
     
     # Look for event URLs in the HTML if available
     event_url = None

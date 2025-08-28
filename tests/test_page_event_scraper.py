@@ -176,7 +176,8 @@ def test_scrape_page_events_multiple():
 
 def test_scrape_page_events_no_openai_key():
     """Test scraping without OpenAI API key."""
-    with patch('scrapers.page_event_scraper.requests.get', side_effect=fake_get):
+    with patch('scrapers.page_event_scraper.requests.get', side_effect=fake_get), \
+         patch('scrapers.page_event_scraper.get_openai_api_key', return_value=None):
         events = scrape_page_events("http://example.com/events")
     
     # Should return empty list when no API key is available
