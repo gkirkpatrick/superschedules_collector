@@ -12,8 +12,7 @@ import requests
 from bs4 import BeautifulSoup, Tag
 from dotenv import load_dotenv
 
-from ingest.api_client import post_event
-from .pagination_detector import detect_pagination
+# Removed pagination and API client imports - Django backend handles these now
 
 load_dotenv()
 
@@ -34,12 +33,14 @@ def get_openai_api_key() -> str | None:
     except FileNotFoundError:
         return None
 
-# Optimized event extraction prompt (51% more efficient than original)
+# Optimized event extraction prompt with date filtering
 EVENT_EXTRACTION_PROMPT = """Return only valid JSON, no markdown or other text.
 
 Schema: {{"source_id": null, "external_id": "url_or_id", "title": "required", "description": "text", "location": "place", "start_time": "2024-01-01T10:00:00-05:00", "end_time": "time", "url": "link", "metadata_tags": ["categories", "event_types", "keywords"]}}
 
-Use Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event.
+IMPORTANT: Only extract events that are CURRENT or FUTURE. Today is {current_date}. Return null for past events.
+
+Use Eastern timezone. Extract all relevant categories and keywords as tags. Return null if no event or if event is in the past.
 
 Content: {content}
 URL: {context_url}"""
@@ -201,7 +202,13 @@ def process_section_with_llm(section: str, source_url: str, section_html: Option
         if previous_siblings:
             enhanced_content = "\n".join(reversed(previous_siblings)) + "\n" + section
     
-    prompt = EVENT_EXTRACTION_PROMPT.format(content=enhanced_content, context_url=source_url)
+    from datetime import datetime, timezone
+    current_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    prompt = EVENT_EXTRACTION_PROMPT.format(
+        content=enhanced_content, 
+        context_url=source_url,
+        current_date=current_date
+    )
     
     payload = {
         "model": OPENAI_MODEL,
@@ -373,34 +380,7 @@ def scrape_page_events(
                         )
                         events.extend(recursive_events)
         
-        # Step 6: Detect and follow pagination links
-        if follow_pagination and max_depth > 0:
-            try:
-                pagination_result = detect_pagination(url, response.text, api_key)
-                
-                if pagination_result.next_urls:
-                    logger.info(f"Found {len(pagination_result.next_urls)} pagination URLs on {url}")
-                    logger.info(f"Pagination type: {pagination_result.pagination_type}, confidence: {pagination_result.confidence:.2f}")
-                    
-                    for next_url in pagination_result.next_urls[:5]:  # Limit to 5 pages to avoid infinite loops
-                        if next_url not in visited_urls:
-                            logger.info(f"Following pagination link: {next_url}")
-                            pagination_events = scrape_page_events(
-                                next_url,
-                                source_id,
-                                max_depth - 1,
-                                visited_urls,
-                                follow_pagination=False  # Don't follow pagination recursively to avoid loops
-                            )
-                            events.extend(pagination_events)
-                            
-                            if pagination_events:
-                                logger.info(f"Found {len(pagination_events)} events on pagination page {next_url}")
-                else:
-                    logger.debug(f"No pagination detected on {url}")
-                    
-            except Exception as e:
-                logger.warning(f"Error during pagination detection on {url}: {e}")
+        # Pagination handling removed - Django backend manages this now
 
         # Enhanced Step 4: If no events found, check for calendar iframes
         if not events and max_depth > 0:
@@ -424,28 +404,4 @@ def scrape_page_events(
     
     return events
 
-def scrape_and_save_events(url: str, source_id: Optional[int] = None, follow_pagination: bool = True) -> List[dict[str, Any]]:
-    """
-    Scrape events from a page and save them to the backend API.
-    
-    Args:
-        url: URL to scrape
-        source_id: Optional source ID for the events
-        follow_pagination: Whether to detect and follow pagination links
-    
-    Returns:
-        List of successfully saved events.
-    """
-    events = scrape_page_events(url, source_id, follow_pagination=follow_pagination)
-    saved_events = []
-    
-    for event in events:
-        try:
-            # Step 5: Save valid events to backend
-            response = post_event(event)
-            saved_events.append(response)
-            logger.info(f"Saved event: {event.get('title', 'Unknown')}")
-        except Exception as e:
-            logger.error(f"Failed to save event {event.get('title', 'Unknown')}: {e}")
-    
-    return saved_events
+# scrape_and_save_events removed - Django backend handles saving now

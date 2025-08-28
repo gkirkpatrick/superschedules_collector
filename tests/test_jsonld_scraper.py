@@ -44,21 +44,21 @@ def fake_get(url, **kwargs):  # pylint: disable=unused-argument
 
 def test_scrape_events_from_iframe_jsonld():
     with patch("scrapers.jsonld_scraper.requests.get", side_effect=fake_get):
-        events = scrape_events_from_jsonld(PARENT_URL, source_id=1)
+        events = scrape_events_from_jsonld(PARENT_URL)
     assert len(events) == 1
     event = events[0]
     assert event["title"] == "Sample Event"
     assert event["url"] == "https://example.com/event"
     assert event["start_time"] == "2025-08-11T00:00:00+00:00"
-    assert event["source_id"] == 1
+    # source_id removed from new API
 
 
 def test_scrape_events_with_separate_times():
     with patch("scrapers.jsonld_scraper.requests.get", side_effect=fake_get):
-        events = scrape_events_from_jsonld(TIMED_URL, source_id=2)
+        events = scrape_events_from_jsonld(TIMED_URL)
     assert len(events) == 1
     event = events[0]
     assert event["title"] == "Timed Event"
     assert event["start_time"] == "2025-08-11T18:30:00+00:00"
     assert event["end_time"] == "2025-08-11T20:00:00+00:00"
-    assert event["source_id"] == 2
+    # source_id removed from new API

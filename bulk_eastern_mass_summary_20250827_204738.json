@@ -1,0 +1,754 @@
+{
+  "timestamp": "2025-08-27T20:47:38.392880",
+  "sources_total": 80,
+  "sources_processed": 80,
+  "sources_failed": 0,
+  "sources_needing_improvement": 74,
+  "total_events_found": 556,
+  "current_future_events_posted": 33,
+  "success_rate_percent": 5.9,
+  "total_time_minutes": 1927.0,
+  "sources_for_improvement": [
+    {
+      "source": "Boston Public Library",
+      "url": "https://bpl.bibliocommons.com/events/",
+      "type": "library",
+      "city": "Boston",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Cambridge Public Library",
+      "url": "https://cambridge.bibliocommons.com/events/",
+      "type": "library",
+      "city": "Cambridge",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Somerville Public Library",
+      "url": "https://somervillepubliclibrary.assabetinteractive.com/calendar/",
+      "type": "library",
+      "city": "Somerville",
+      "reason": "partial_success",
+      "details": "Posted 0/2 events successfully",
+      "events_found": 21,
+      "events_posted": 0
+    },
+    {
+      "source": "Newton Free Library",
+      "url": "https://newtonfreelibrary.libcal.com/",
+      "type": "library",
+      "city": "Newton",
+      "reason": "partial_success",
+      "details": "Posted 0/1 events successfully",
+      "events_found": 1,
+      "events_posted": 0
+    },
+    {
+      "source": "Brookline Public Library",
+      "url": "https://www.brooklinelibrary.org/events/",
+      "type": "library",
+      "city": "Brookline",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Wellesley Free Library",
+      "url": "https://wellesleyfreelibrary.libcal.com/",
+      "type": "library",
+      "city": "Wellesley",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Needham Free Public Library",
+      "url": "https://needhamlibrary.org/events",
+      "type": "library",
+      "city": "Needham",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Watertown Free Public Library",
+      "url": "https://watertownlib.org/events",
+      "type": "library",
+      "city": "Watertown",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Waltham Public Library",
+      "url": "https://waltham.lib.ma.us/programs/",
+      "type": "library",
+      "city": "Waltham",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Dedham Public Library",
+      "url": "https://dedhamlibrary.com/events/",
+      "type": "library",
+      "city": "Dedham",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Weston Public Library",
+      "url": "https://www.westonlibrary.org/events",
+      "type": "library",
+      "city": "Weston",
+      "reason": "partial_success",
+      "details": "Posted 0/1 events successfully",
+      "events_found": 1,
+      "events_posted": 0
+    },
+    {
+      "source": "Arlington Robbins Library",
+      "url": "https://robbinslibrary.org/events/",
+      "type": "library",
+      "city": "Arlington",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Belmont Public Library",
+      "url": "https://belmontpubliclibrary.net/events/",
+      "type": "library",
+      "city": "Belmont",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Cary Memorial Library",
+      "url": "https://www.carylibrary.org/events",
+      "type": "library",
+      "city": "Lexington",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Medford Public Library",
+      "url": "https://medfordlibrary.org/events/",
+      "type": "library",
+      "city": "Medford",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Malden Public Library",
+      "url": "https://www.maldenpubliclibrary.org/calendar/",
+      "type": "library",
+      "city": "Malden",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Melrose Public Library",
+      "url": "https://melrosepubliclibrary.org/events/",
+      "type": "library",
+      "city": "Melrose",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Thomas Crane Public Library",
+      "url": "https://thomascranelibrary.libcal.com/",
+      "type": "library",
+      "city": "Quincy",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Braintree Public Library",
+      "url": "https://braintreelibrary.assabetinteractive.com/calendar/",
+      "type": "library",
+      "city": "Braintree",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Museum of Fine Arts",
+      "url": "https://www.mfa.org/programs",
+      "type": "museum",
+      "city": "Boston",
+      "reason": "partial_success",
+      "details": "Posted 0/1 events successfully",
+      "events_found": 1,
+      "events_posted": 0
+    },
+    {
+      "source": "Isabella Stewart Gardner Museum",
+      "url": "https://www.gardnermuseum.org/calendar",
+      "type": "museum",
+      "city": "Boston",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Museum of Science",
+      "url": "https://www.mos.org/events",
+      "type": "museum",
+      "city": "Boston",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Boston Children's Museum",
+      "url": "https://bostonchildrensmuseum.org/calendar/",
+      "type": "museum",
+      "city": "Boston",
+      "reason": "partial_success",
+      "details": "Posted 0/1 events successfully",
+      "events_found": 1,
+      "events_posted": 0
+    },
+    {
+      "source": "Institute of Contemporary Art",
+      "url": "https://www.icaboston.org/calendar/",
+      "type": "museum",
+      "city": "Boston",
+      "reason": "partial_success",
+      "details": "Posted 0/17 events successfully",
+      "events_found": 45,
+      "events_posted": 0
+    },
+    {
+      "source": "Harvard Art Museums",
+      "url": "https://harvardartmuseums.org/calendar",
+      "type": "museum",
+      "city": "Cambridge",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "MIT Museum",
+      "url": "https://mitmuseum.mit.edu/on-now/programs-and-events",
+      "type": "museum",
+      "city": "Cambridge",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Harvard Museums of Science & Culture",
+      "url": "https://hmsc.harvard.edu/programs/upcoming-programs/",
+      "type": "museum",
+      "city": "Cambridge",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Harvard Museum of Natural History",
+      "url": "https://www.hmnh.harvard.edu/calendar",
+      "type": "museum",
+      "city": "Cambridge",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Peabody Museum of Archaeology & Ethnology",
+      "url": "https://peabody.harvard.edu/events",
+      "type": "museum",
+      "city": "Cambridge",
+      "reason": "partial_success",
+      "details": "Posted 0/2 events successfully",
+      "events_found": 2,
+      "events_posted": 0
+    },
+    {
+      "source": "Peabody Essex Museum",
+      "url": "https://www.pem.org/events",
+      "type": "museum",
+      "city": "Salem",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "USS Constitution Museum",
+      "url": "https://ussconstitutionmuseum.org/events/",
+      "type": "museum",
+      "city": "Boston",
+      "reason": "partial_success",
+      "details": "Posted 0/5 events successfully",
+      "events_found": 5,
+      "events_posted": 0
+    },
+    {
+      "source": "Larz Anderson Auto Museum",
+      "url": "https://www.larzanderson.org/event-schedule",
+      "type": "museum",
+      "city": "Brookline",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Waterworks Museum",
+      "url": "https://waterworksmuseum.org/events/",
+      "type": "museum",
+      "city": "Boston",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "JFK Presidential Library",
+      "url": "https://www.jfklibrary.org/visit-museum/visit/museum-calendar",
+      "type": "museum",
+      "city": "Boston",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Museum of African American History",
+      "url": "https://www.maah.org/events",
+      "type": "museum",
+      "city": "Boston",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Concord Museum",
+      "url": "https://concordmuseum.org/whats-on/",
+      "type": "museum",
+      "city": "Concord",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Somerville Museum",
+      "url": "https://www.somervillemuseum.org/calendar",
+      "type": "museum",
+      "city": "Somerville",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "MassArt Art Museum",
+      "url": "https://maam.massart.edu/events",
+      "type": "museum",
+      "city": "Boston",
+      "reason": "partial_success",
+      "details": "Posted 1/4 events successfully",
+      "events_found": 5,
+      "events_posted": 1
+    },
+    {
+      "source": "Franklin Park Zoo",
+      "url": "https://www.zoonewengland.org/franklin-park-zoo/plan-your-visit/whats-happening",
+      "type": "zoo",
+      "city": "Boston",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Stone Zoo",
+      "url": "https://www.zoonewengland.org/stone-zoo/plan-your-visit/whats-happening",
+      "type": "zoo",
+      "city": "Stoneham",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "MIT Events Calendar",
+      "url": "https://calendar.mit.edu/",
+      "type": "university",
+      "city": "Cambridge",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "MIT Arts",
+      "url": "https://calendar.mit.edu/department/arts_at_mit",
+      "type": "university",
+      "city": "Cambridge",
+      "reason": "partial_success",
+      "details": "Posted 0/2 events successfully",
+      "events_found": 6,
+      "events_posted": 0
+    },
+    {
+      "source": "MIT Event Guide",
+      "url": "https://web.mit.edu/eventguide/advertising/calendar.html",
+      "type": "university",
+      "city": "Cambridge",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Harvard Gazette Events",
+      "url": "https://news.harvard.edu/gazette/harvard-events/events-calendar/",
+      "type": "university",
+      "city": "Cambridge",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Harvard Kennedy School Events",
+      "url": "https://www.hks.harvard.edu/more/events",
+      "type": "university",
+      "city": "Cambridge",
+      "reason": "partial_success",
+      "details": "Posted 0/7 events successfully",
+      "events_found": 7,
+      "events_posted": 0
+    },
+    {
+      "source": "Harvard South Asia Institute Events",
+      "url": "https://mittalsouthasiainstitute.harvard.edu/events/",
+      "type": "university",
+      "city": "Cambridge",
+      "reason": "partial_success",
+      "details": "Posted 0/2 events successfully",
+      "events_found": 2,
+      "events_posted": 0
+    },
+    {
+      "source": "Harvard Alumni Events",
+      "url": "https://alumni.harvard.edu/programs-events",
+      "type": "university",
+      "city": "Cambridge",
+      "reason": "partial_success",
+      "details": "Posted 0/149 events successfully",
+      "events_found": 275,
+      "events_posted": 0
+    },
+    {
+      "source": "Boston University Events",
+      "url": "https://www.bu.edu/calendar/",
+      "type": "university",
+      "city": "Boston",
+      "reason": "partial_success",
+      "details": "Posted 0/1 events successfully",
+      "events_found": 1,
+      "events_posted": 0
+    },
+    {
+      "source": "Boston College Events",
+      "url": "https://events.bc.edu/",
+      "type": "university",
+      "city": "Chestnut Hill",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Northeastern University Events",
+      "url": "https://calendar.northeastern.edu/",
+      "type": "university",
+      "city": "Boston",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Tufts University Events",
+      "url": "https://events.tufts.edu/",
+      "type": "university",
+      "city": "Medford",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Emerson College Events",
+      "url": "https://emerson.edu/events",
+      "type": "university",
+      "city": "Boston",
+      "reason": "partial_success",
+      "details": "Posted 0/1 events successfully",
+      "events_found": 1,
+      "events_posted": 0
+    },
+    {
+      "source": "UMass Boston Events",
+      "url": "https://www.umb.edu/events",
+      "type": "university",
+      "city": "Boston",
+      "reason": "partial_success",
+      "details": "Posted 0/1 events successfully",
+      "events_found": 1,
+      "events_posted": 0
+    },
+    {
+      "source": "Lesley University Events",
+      "url": "https://www.lesley.edu/events",
+      "type": "university",
+      "city": "Cambridge",
+      "reason": "partial_success",
+      "details": "Posted 0/11 events successfully",
+      "events_found": 21,
+      "events_posted": 0
+    },
+    {
+      "source": "Brandeis University Events",
+      "url": "https://www.brandeis.edu/events/index.html",
+      "type": "university",
+      "city": "Waltham",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Bentley University Events",
+      "url": "https://events.bentley.edu/",
+      "type": "university",
+      "city": "Waltham",
+      "reason": "partial_success",
+      "details": "Posted 9/68 events successfully",
+      "events_found": 83,
+      "events_posted": 9
+    },
+    {
+      "source": "Salem State University Events",
+      "url": "https://www.salemstate.edu/events",
+      "type": "university",
+      "city": "Salem",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "UMass Lowell Events",
+      "url": "https://www.uml.edu/calendar/",
+      "type": "university",
+      "city": "Lowell",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "City of Boston Events",
+      "url": "https://www.boston.gov/events",
+      "type": "city",
+      "city": "Boston",
+      "reason": "partial_success",
+      "details": "Posted 13/28 events successfully",
+      "events_found": 30,
+      "events_posted": 13
+    },
+    {
+      "source": "City of Cambridge Calendar",
+      "url": "https://www.cambridgema.gov/Departments/citycalendar",
+      "type": "city",
+      "city": "Cambridge",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "City of Somerville Events",
+      "url": "https://www.somervillema.gov/events",
+      "type": "city",
+      "city": "Somerville",
+      "reason": "partial_success",
+      "details": "Posted 3/10 events successfully",
+      "events_found": 15,
+      "events_posted": 3
+    },
+    {
+      "source": "City of Newton Events",
+      "url": "https://www.newtonma.gov/Home/Components/Calendar/Event/",
+      "type": "city",
+      "city": "Newton",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Town of Brookline Calendar",
+      "url": "https://brooklinema.gov/calendar.aspx",
+      "type": "city",
+      "city": "Brookline",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Town of Arlington Calendar",
+      "url": "https://www.arlingtonma.gov/Home/Components/Calendar/Event/",
+      "type": "city",
+      "city": "Arlington",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Town of Belmont Calendar",
+      "url": "https://www.belmont-ma.gov/calendar",
+      "type": "city",
+      "city": "Belmont",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "City of Medford Events",
+      "url": "https://www.medfordma.org/events",
+      "type": "city",
+      "city": "Medford",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "City of Quincy Calendar",
+      "url": "https://www.quincyma.gov/calendar.aspx",
+      "type": "city",
+      "city": "Quincy",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Town of Braintree Calendar",
+      "url": "https://www.braintreema.gov/calendar",
+      "type": "city",
+      "city": "Braintree",
+      "reason": "partial_success",
+      "details": "Posted 0/1 events successfully",
+      "events_found": 2,
+      "events_posted": 0
+    },
+    {
+      "source": "Town of Needham Calendar",
+      "url": "https://www.needhamma.gov/calendar.aspx",
+      "type": "city",
+      "city": "Needham",
+      "reason": "partial_success",
+      "details": "Posted 0/9 events successfully",
+      "events_found": 14,
+      "events_posted": 0
+    },
+    {
+      "source": "City of Watertown Calendar",
+      "url": "https://www.watertown-ma.gov/calendar.aspx",
+      "type": "city",
+      "city": "Watertown",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "City of Waltham Calendar",
+      "url": "https://www.city.waltham.ma.us/calendar",
+      "type": "city",
+      "city": "Waltham",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "The Boston Calendar",
+      "url": "https://www.thebostoncalendar.com/",
+      "type": "aggregator",
+      "city": "Boston",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Meet Boston",
+      "url": "https://www.meetboston.com/events/",
+      "type": "aggregator",
+      "city": "Boston",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    },
+    {
+      "source": "Boston Hassle",
+      "url": "https://bostonhassle.com/",
+      "type": "aggregator",
+      "city": "Boston",
+      "reason": "no_events_found",
+      "details": "Scraper completed successfully but found no events. May need different scraping strategy.",
+      "events_found": 0,
+      "events_posted": 0
+    }
+  ],
+  "errors": []
+}

@@ -12,7 +12,10 @@ from bs4 import BeautifulSoup
 
 from .utils import make_external_id, to_iso_datetime
 
-client = OpenAI()
+
+def get_openai_client() -> OpenAI:
+    """Get OpenAI client, lazy-loaded to avoid module-level initialization."""
+    return OpenAI()
 
 
 class HintDiscovery(BaseModel):
@@ -92,7 +95,7 @@ def discover_event_hints(url: str) -> dict:
         html_content = str(soup)[:50000]
     
     try:
-        resp = client.responses.parse(
+        resp = get_openai_client().responses.parse(
             model="o4-mini",
             reasoning={"effort": "medium"},
             input=[
@@ -186,7 +189,7 @@ def parse_events(url: str, hints: dict = None) -> dict[str, Any]:
         return {"source": url, "events": []}
 
     try:
-        resp = client.responses.parse(
+        resp = get_openai_client().responses.parse(
             model="o4-mini",
             reasoning={"effort": "low"},
             input=[

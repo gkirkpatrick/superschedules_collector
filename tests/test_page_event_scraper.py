@@ -153,12 +153,12 @@ def test_scrape_page_events():
     with patch('scrapers.page_event_scraper.requests.get', side_effect=fake_get), \
          patch('scrapers.page_event_scraper.requests.post', side_effect=fake_openai_response):
         
-        events = scrape_page_events("http://example.com/events", source_id=123)
+        events = scrape_page_events("http://example.com/events")
     
     assert len(events) >= 1
     event = events[0]
     assert event['title'] == 'Community Concert'
-    assert event['source_id'] == 123
+    # source_id removed from new API
 
 
 def test_scrape_page_events_multiple():
@@ -166,7 +166,7 @@ def test_scrape_page_events_multiple():
     with patch('scrapers.page_event_scraper.requests.get', side_effect=fake_get), \
          patch('scrapers.page_event_scraper.requests.post', side_effect=fake_openai_response):
         
-        events = scrape_page_events("http://example.com/multi-events", source_id=456)
+        events = scrape_page_events("http://example.com/multi-events")
     
     # Should find multiple events
     assert len(events) >= 1

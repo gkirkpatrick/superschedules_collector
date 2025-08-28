@@ -28,33 +28,38 @@ URLs → Collector → Backend → RAG → Natural Language Interface
   - Authentication with API tokens
 
 ### 3. **superschedules_collector** (Python - This Repo)
-- **Status:** Fully functional end-to-end
+- **Status:** Refactored to extraction-only service
 - **Features:**
-  - Hierarchical scraping: JSON-LD → LLM fallback → Enhanced scraping
-  - Intelligent pagination detection (CSS, JavaScript, LLM)
-  - FastAPI server with health endpoints (port 8001)
+  - Single URL → JSON events extraction
+  - Hierarchical scraping: JSON-LD → LLM fallback
+  - LLM validation and semantic tagging
+  - FastAPI server with `/extract` endpoint (port 8001)
   - Playwright rendering for dynamic content
-  - OpenAI structured output for event extraction
-  - Local HTML snapshots for reliable testing
+  - OpenAI structured output with confidence scoring
 
 ### 4. **superschedules_IAC** (Terraform)
 - **Status:** Basic deployment setup
 - **Purpose:** Infrastructure as Code for deployment
 
-## Current Collector Architecture
+## Current Collector Architecture (Extraction-Only)
 
-### Main Flow
-1. **URL Input** → `jobs/process_url.py`
+### Simplified Flow
+1. **Django Backend** → POST `/extract` with URL + hints
 2. **JSON-LD Scraper** → `scrapers/jsonld_scraper.py` (first attempt)
 3. **LLM Scraper** → `scrapers/llm_scraper.py` (fallback)
-4. **Enhanced Scraper** → `scrapers/page_event_scraper.py` (advanced fallback)
-5. **API Integration** → `ingest/api_client.py` (posts to backend)
+4. **Event Validator** → `scrapers/event_validator.py` (LLM tagging & validation)
+5. **Return JSON** → Structured events back to Django
 
 ### Key Files
-- `api/main.py` - FastAPI server endpoints
+- `api/main.py` - FastAPI server with `/extract` endpoint
+- `scrapers/event_validator.py` - LLM validation and tagging
 - `start_api.py` - Server startup script
-- `test_pagination.py` - Pagination testing with local snapshots
-- `llm_testing/` - LLM model comparison tools (Gemma2:7b vs OpenAI)
+
+### Removed (Django Backend Handles)
+- URL queue management
+- Pagination detection and following
+- Event storage and deduplication
+- Job orchestration and retry logic
 
 ### Environment Setup
 - Virtual env: `collector_dev/`

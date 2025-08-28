@@ -9,9 +9,8 @@ from pydantic import BaseModel
 
 # Import your existing modules
 from scrapers.jsonld_scraper import scrape_events_from_jsonld
-from scrapers.llm_scraper import scrape_events_from_llm, discover_event_hints
-from scrapers.pagination_detector import detect_pagination
-from api.hints_client import get_cached_hints, cache_hints, update_strategy_success
+from scrapers.llm_scraper import scrape_events_from_llm
+from scrapers.event_validator import validate_and_enhance_events
 
 app = FastAPI(
     title="Superschedules Collector API",
@@ -24,8 +23,7 @@ executor = ThreadPoolExecutor(max_workers=4)
 
 
 class EventModel(BaseModel):
-    """Event data model matching your current schema."""
-    source_id: Optional[int] = None
+    """Event data model with LLM-enhanced tags."""
     external_id: str
     title: str
     description: str
@@ -33,6 +31,8 @@ class EventModel(BaseModel):
     start_time: str  # ISO datetime string
     end_time: Optional[str] = None  # ISO datetime string
     url: Optional[str] = None
+    tags: Optional[List[str]] = None  # LLM-generated tags from description
+    validation_score: Optional[float] = None  # LLM confidence in extraction accuracy
 
 
 class HealthResponse(BaseModel):
@@ -42,99 +42,79 @@ class HealthResponse(BaseModel):
     version: str
 
 
-class ScrapeRequest(BaseModel):
-    """Request model for scraping endpoints."""
-    url: str
-    search_methods: Optional[List[str]] = ["jsonld", "llm"]
-    event_tags: Optional[List[str]] = None
-    hints: Optional[Dict] = None  # CSS selectors and other scraping hints
-    auto_discover_hints: Optional[bool] = False  # Enable automatic hint discovery
-    follow_event_urls: Optional[bool] = False  # Follow individual event URLs
-    use_cached_hints: Optional[bool] = True  # Use cached hints from previous scrapes
-    cache_discovered_hints: Optional[bool] = True  # Cache newly discovered hints
-    additional_info: Optional[Dict] = None
+class ExtractionHints(BaseModel):
+    """Hints to help with extraction."""
+    expected_event_count: Optional[int] = None
+    date_format_hints: Optional[List[str]] = None
+    content_selectors: Optional[List[str]] = None
+    additional_hints: Optional[Dict] = None
 
 
-class ScrapeResponse(BaseModel):
-    """Response model for scraping operations."""
+class SchemaRequirements(BaseModel):
+    """Schema requirements for extracted events."""
+    required_fields: List[str] = ["title", "date"]
+    optional_fields: List[str] = ["description", "location", "url"]
+
+
+class ExtractRequest(BaseModel):
+    """Request model for event extraction."""
     url: str
-    events_found: int
+    extraction_hints: Optional[ExtractionHints] = None
+    schema_requirements: Optional[SchemaRequirements] = None
+
+
+class ExtractResponse(BaseModel):
+    """Response model for event extraction."""
+    success: bool
     events: List[EventModel]
-    pagination_detected: bool
-    next_pages: Optional[List[str]] = None
-    hints_used: Optional[Dict] = None  # Hints that were used for scraping
-    hints_discovered: Optional[Dict] = None  # New hints discovered during scraping
-    hints_cached: Optional[bool] = None  # Whether hints were stored in backend
+    metadata: Dict
     processing_time_seconds: float
 
 
-def _scrape_sync(url: str, search_methods: List[str], hints: Optional[Dict] = None, 
-                auto_discover_hints: bool = False, follow_event_urls: bool = False,
-                use_cached_hints: bool = True, cache_discovered_hints: bool = True) -> Dict:
-    """Synchronous scraping function to run in thread pool."""
+def _extract_events_sync(url: str, hints: Optional[ExtractionHints] = None) -> Dict:
+    """Synchronous event extraction function to run in thread pool."""
     all_events = []
-    hints_used = hints
-    hints_discovered = None
-    hints_cached = False
+    extraction_method = "none"
     
-    # Try to get cached hints if no manual hints provided and caching is enabled
-    if use_cached_hints and not hints:
-        cached_hints = get_cached_hints(url)
-        if cached_hints:
-            hints_used = cached_hints
-            print(f"Using cached hints for {url}: {cached_hints.get('event_containers', [])}")
-    
-    # Try JSON-LD first if requested
-    if "jsonld" in search_methods:
-        try:
-            jsonld_events = scrape_events_from_jsonld(url)
+    # Try JSON-LD first (fastest, most reliable)
+    try:
+        jsonld_events = scrape_events_from_jsonld(url)
+        if jsonld_events:
             all_events.extend(jsonld_events)
-        except Exception as e:
-            print(f"JSON-LD extraction failed: {e}")
+            extraction_method = "jsonld"
+            print(f"JSON-LD extraction successful: {len(jsonld_events)} events")
+    except Exception as e:
+        print(f"JSON-LD extraction failed: {e}")
     
-    # Try LLM scraping if no events found or explicitly requested
-    if "llm" in search_methods and len(all_events) == 0:
+    # Try LLM scraping if no events found
+    if len(all_events) == 0:
         try:
-            # Auto-discover hints if requested and no manual/cached hints provided
-            if auto_discover_hints and not hints_used:
-                print(f"Auto-discovering hints for {url}")
-                discovered_hints = discover_event_hints(url)
-                if discovered_hints.get("event_containers"):
-                    hints_used = discovered_hints
-                    hints_discovered = discovered_hints
-                    print(f"Discovered hints: {discovered_hints['event_containers']}")
+            # Convert hints to old format if provided
+            old_hints = None
+            if hints and hints.content_selectors:
+                old_hints = {"event_containers": hints.content_selectors}
             
-            # Scrape with hints
-            llm_events = scrape_events_from_llm(
-                url,
-                hints=hints_used,
-                auto_discover_hints=auto_discover_hints,
-                follow_event_urls=follow_event_urls
-            )
-            all_events.extend(llm_events)
+            llm_events = scrape_events_from_llm(url, hints=old_hints)
+            if llm_events:
+                all_events.extend(llm_events)
+                extraction_method = "llm"
+                print(f"LLM extraction successful: {len(llm_events)} events")
         except Exception as e:
             print(f"LLM scraping failed: {e}")
+            extraction_method = "failed"
     
-    # Cache discovered hints if enabled and we found new ones
-    if cache_discovered_hints and hints_discovered and len(all_events) > 0:
+    # Validate and enhance events with LLM tags
+    if all_events:
         try:
-            hints_cached = cache_hints(url, hints_discovered, success=True)
-            if hints_cached:
-                print(f"Cached discovered hints for {url}")
+            enhanced_events = validate_and_enhance_events(all_events)
+            all_events = enhanced_events
+            print(f"Events validated and enhanced with tags")
         except Exception as e:
-            print(f"Failed to cache hints: {e}")
-    
-    # Update success rate
-    try:
-        update_strategy_success(url, len(all_events) > 0)
-    except Exception as e:
-        print(f"Failed to update success rate: {e}")
+            print(f"Event validation failed: {e}")
     
     return {
         "events": all_events,
-        "hints_used": hints_used,
-        "hints_discovered": hints_discovered,
-        "hints_cached": hints_cached
+        "extraction_method": extraction_method
     }
 
 
@@ -170,60 +150,61 @@ async def readiness_check():
     )
 
 
-@app.post("/scrape", response_model=ScrapeResponse)
-async def scrape_events(request: ScrapeRequest):
+@app.post("/extract", response_model=ExtractResponse)
+async def extract_events(request: ExtractRequest):
     """
-    Scrape events from a given URL using specified methods with hints support.
+    Extract events from a single URL with optional hints and validation.
     
-    This endpoint supports:
-    - Manual hints (CSS selectors for event containers)
-    - Automatic hint discovery using LLM
-    - URL following strategy for complex calendars
+    This endpoint:
+    - Tries JSON-LD first, falls back to LLM extraction
+    - Validates events and generates semantic tags using LLM
+    - Returns structured events ready for Django backend
     """
     start_time = datetime.utcnow()
     
     try:
-        # Run scraping in thread pool to avoid asyncio conflicts with Playwright
+        # Run extraction in thread pool to avoid asyncio conflicts with Playwright
         loop = asyncio.get_event_loop()
         result = await loop.run_in_executor(
             executor,
-            _scrape_sync,
+            _extract_events_sync,
             request.url,
-            request.search_methods,
-            request.hints,
-            request.auto_discover_hints,
-            request.follow_event_urls,
-            request.use_cached_hints,
-            request.cache_discovered_hints
+            request.extraction_hints
         )
         
-        all_events = result["events"]
-        hints_used = result["hints_used"]
-        hints_discovered = result["hints_discovered"]
-        hints_cached = result["hints_cached"]
-        
-        # Basic pagination detection - you can enhance this later
-        pagination_detected = False
-        next_pages = []
+        events = result["events"]
+        extraction_method = result["extraction_method"]
         
         # Calculate processing time
         end_time = datetime.utcnow()
         processing_time = (end_time - start_time).total_seconds()
         
-        return ScrapeResponse(
-            url=request.url,
-            events_found=len(all_events),
-            events=[EventModel(**event) for event in all_events],
-            pagination_detected=pagination_detected,
-            next_pages=next_pages,
-            hints_used=hints_used,
-            hints_discovered=hints_discovered,
-            hints_cached=hints_cached,
+        # Get page title for metadata (simple approach)
+        page_title = "Unknown"
+        try:
+            from playwright.sync_api import sync_playwright
+            with sync_playwright() as p:
+                browser = p.chromium.launch(headless=True)
+                page = browser.new_page()
+                page.goto(request.url)
+                page_title = page.title()
+                browser.close()
+        except Exception:
+            pass  # Not critical if we can't get title
+        
+        return ExtractResponse(
+            success=len(events) > 0,
+            events=[EventModel(**event) for event in events],
+            metadata={
+                "extraction_method": extraction_method,
+                "page_title": page_title,
+                "total_found": len(events)
+            },
             processing_time_seconds=processing_time
         )
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Scraping failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Extraction failed: {str(e)}")
 
 
 @app.get("/")
