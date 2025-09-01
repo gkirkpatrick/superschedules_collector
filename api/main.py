@@ -2,10 +2,10 @@
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 # Import your existing modules
 from scrapers.jsonld_scraper import scrape_events_from_jsonld
@@ -22,15 +22,38 @@ app = FastAPI(
 executor = ThreadPoolExecutor(max_workers=4)
 
 
+class Place(BaseModel):
+    """Schema.org Place object for rich location data."""
+    type: str = Field(default="Place", alias="@type")
+    name: Optional[str] = Field(None, description="Venue/room name (e.g., 'Children's Room')")
+    address: Optional[str] = Field(None, description="Full address for geocoding")
+    telephone: Optional[str] = Field(None, description="Contact phone number")  
+    url: Optional[str] = Field(None, description="Venue website")
+    
+    class Config:
+        allow_population_by_field_name = True
+        
+    def __str__(self) -> str:
+        """Allow simple string conversion for backward compatibility."""
+        return self.name or self.address or "Unknown Location"
+
+
 class EventModel(BaseModel):
-    """Event data model with LLM-enhanced tags."""
+    """Event data model with Schema.org support and LLM-enhanced tags."""
     external_id: str
     title: str
     description: str
-    location: str
+    location: Union[str, Place]  # Supports both simple strings and rich Place objects
     start_time: str  # ISO datetime string
     end_time: Optional[str] = None  # ISO datetime string
     url: Optional[str] = None
+    
+    # Additional Schema.org fields
+    organizer: Optional[str] = Field(None, description="Event organizer name")
+    event_status: Optional[str] = Field(None, description="scheduled/cancelled/postponed")
+    event_attendance_mode: Optional[str] = Field(None, description="offline/online/mixed")
+    
+    # LLM enhancements
     tags: Optional[List[str]] = None  # LLM-generated tags from description
     validation_score: Optional[float] = None  # LLM confidence in extraction accuracy
 
